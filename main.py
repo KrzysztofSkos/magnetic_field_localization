@@ -1,5 +1,6 @@
 from magnets import Magnet
 from sensor import Sensor
+import csv
 
 magnet = Magnet()
 
@@ -40,4 +41,8 @@ for point in points:
 print(meanFluxList[0])
 print(len(meanFluxList))
 
+f = open('test.csv', 'w')
+writer = csv.writer(f)
+writer.writerows(meanFluxList)
+f.close()
 # TODO save meanFluxList as xlsx or plot3D
