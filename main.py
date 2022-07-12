@@ -43,6 +43,10 @@ print(len(meanFluxList))
 
 f = open('test.csv', 'w')
 writer = csv.writer(f)
-writer.writerows(meanFluxList)
+
+for row in meanFluxList:
+    # print(row)
+    writer.writerow((row[0][0], row[0][1], row[0][2], row[1][0], row[1][1],
+                     row[1][2]))
 f.close()
 # TODO save meanFluxList as xlsx or plot3D
