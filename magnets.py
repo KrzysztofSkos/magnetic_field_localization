@@ -95,11 +95,11 @@ class Magnet:
 
     def countFlux(self, distances):
         fluxX = self.current[0] * 2 * 10 ** (-7) / distances[0] * 100  # *100 to change unit from cm to m
-        fluxX = self.addNoise(fluxX)
+        #  fluxX = self.addNoise(fluxX)
         fluxY = self.current[1] * 2 * 10 ** (-7) / distances[1] * 100  # *100 to change unit from cm to m
-        fluxY = self.addNoise(fluxY)
+        # fluxY = self.addNoise(fluxY)
         fluxZ = self.current[2] * 2 * 10 ** (-7) / distances[2] * 100  # *100 to change unit from cm to m
-        fluxZ = self.addNoise(fluxZ)
+        # fluxZ = self.addNoise(fluxZ)
         return fluxX, fluxY, fluxZ
 
     def addNoise(self, flux):
