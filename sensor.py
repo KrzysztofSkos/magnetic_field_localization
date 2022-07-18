@@ -15,6 +15,7 @@ class Sensor:
         # self.position[2] = pos[2]
         self.position = pos
         # print(self.position)
+
     #
     # def printPosition(self):
     #     print(self.position)
@@ -40,16 +41,19 @@ class Sensor:
 
     def calculateEstimatedPosition(self):
         # TODO fix distance calculation  algorithm
-        a = (self.distanceEstimated[1] ** 2 + self.distanceEstimated[2] ** 2 -
-                                             self.distanceEstimated[0] ** 2) / 2
+        a = abs(self.distanceEstimated[1] ** 2 + self.distanceEstimated[2] ** 2 -
+                self.distanceEstimated[0] ** 2) / 2
+        print(a)
         self.positionEstimated[0] = sqrt(a)
-        # self.positionEstimated[0] -= 50
-        self.positionEstimated[1] = sqrt((self.distanceEstimated[0] ** 2 + self.distanceEstimated[2] ** 2 -
-                                             self.distanceEstimated[1] ** 2) / 2)
-        # self.positionEstimated[1] -= 50
-        self.positionEstimated[2] = sqrt((self.distanceEstimated[0] ** 2 + self.distanceEstimated[1] ** 2 -
-                                             self.distanceEstimated[2] ** 2) / 2)
-        # self.positionEstimated[2] -= 100
+        b = abs(self.distanceEstimated[0] ** 2 + self.distanceEstimated[2] ** 2 -
+                self.distanceEstimated[1] ** 2) / 2
+        print(b)
+        self.positionEstimated[1] = sqrt(b)
+        c = abs(self.distanceEstimated[0] ** 2 + self.distanceEstimated[1] ** 2 -
+                self.distanceEstimated[2] ** 2) / 2
+        print(c)
+        self.positionEstimated[2] = sqrt(c)
+
 
     def calculatePositionError(self):
         self.positionError[0] = abs(self.position[0] - self.positionEstimated[0])

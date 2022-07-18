@@ -25,9 +25,9 @@ magnet = Magnet()
 # y -> 1:100
 # z -> 1:200
 points = []
-for x in range(1, 100, 1):
-    for y in range(1, 100, 1):
-        for z in range(1, 200, 1):
+for x in range(99, 100, 10):
+    for y in range(99, 100, 10):
+        for z in range(199, 200, 10):
             points.append(Sensor((float(x), float(y), float(z))))
 
 
@@ -68,7 +68,7 @@ f = open('test.csv', 'w')
 writer = csv.writer(f)
 
 for row in meanFluxList:
-    # print(row)
+    print(row)
     writer.writerow((row[0][0], row[0][1], row[0][2], row[1][0], row[1][1],
-                     row[1][2]))
+                     row[1][2], row[2][0], row[2][1], row[2][2]))
 f.close()
