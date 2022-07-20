@@ -21,15 +21,15 @@ def meanOfList(list1):
 magnet = Magnet()
 
 # Generating points
-# x -> 1:100
-# y -> 1:100
-# z -> 1:200
+# x -> 71:171
+# y -> 71:171
+# z -> 71:271
 points = []
-for x in range(99, 100, 10):
-    for y in range(99, 100, 10):
-        for z in range(199, 200, 10):
+for x in range(71, 171, 10):
+    for y in range(71, 171, 10):
+        for z in range(71, 271, 10):
             points.append(Sensor((float(x), float(y), float(z))))
-
+# points.append(Sensor((float(100.0), float(100.0), float(100.0))))
 
 # Counting the flux
 meanFluxList = []
@@ -44,16 +44,16 @@ for point in points:
         point.calculateEstimatedDistance(magnet.current)
         point.calculateEstimatedPosition()
         point.calculatePositionError()
-        print("===========================")
-        print(point.flux)
-        print("Position")
-        print(point.position)
-        print(point.positionEstimated)
-        print("Distance")
-        print(point.distance)
-        print(point.distanceEstimated)
-        print("Error")
-        print(point.positionError)
+        # print("===========================")
+        # print(point.flux)
+        # print("Position")
+        # print(point.position)
+        # print(point.positionEstimated)
+        # print("Distance")
+        # print(point.distance)
+        # print(point.distanceEstimated)
+        # print("Error")
+        # print(point.positionError)
         errorList.append(point.positionError)
 
     fX, fY, fZ = meanOfList(fluxList)
@@ -67,8 +67,10 @@ print(len(meanFluxList))
 f = open('test.csv', 'w')
 writer = csv.writer(f)
 
+writer.writerow(("X", "Y", "Z", "Received flux X", "Received flux X", "Received flux X",
+                 "Error X", "Error Y", "Error Z"))
 for row in meanFluxList:
-    print(row)
+    # print(row)
     writer.writerow((row[0][0], row[0][1], row[0][2], row[1][0], row[1][1],
                      row[1][2], row[2][0], row[2][1], row[2][2]))
 f.close()

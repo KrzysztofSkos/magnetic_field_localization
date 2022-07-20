@@ -76,20 +76,20 @@ def pnt2line(pnt, start, end):
 
 
 class Magnet:
-    magnetX = ((100.0, 0.0, 100.0), (0.0, 0.0, 100.0))  # points creating vector X (magnet X) in cm
-    magnetY = ((50.0, 0.0, 0.0), (50.0, 100.0, 0.0))  # points creating vector Y (magnet Y) in cm
-    magnetZ = ((0.0, 50.0, 0.0), (0.0, 50.0, 200.0))  # points creating vector Z (magnet Z) in cm
-    magneticFlux = (0.027, 0.027, 0.027)  # Maximal magnetic flux (near the wire) in T
-    current = (135.0, 135.0, 135.0)  # Current in magnets in A
+    magnetX = ((71.0, 0.0, 0.0), (171.0, 0.0, 0.0))  # points creating vector X (magnet X) in cm
+    magnetY = ((0.0, 71.0, 0.0), (0.0, 171.0, 0.0))  # points creating vector Y (magnet Y) in cm
+    magnetZ = ((0.0, 0.0, 71.0), (0.0, 0.0, 271.0))  # points creating vector Z (magnet Z) in cm
+    magneticFlux = (27.0, 27.0, 27.0)  # (0.027, 0.027, 0.027)  # Maximal magnetic flux (near the wire) in T
+    current = (135000.0, 135000.0, 135000.0)  # (135.0, 135.0, 135.0)  # Current in magnets in A
     noise = (80 * 10 ** (-6), 300 * 10 ** (-6))  # noise range in T
 
     def __init__(self):
         # self.magnetX = ((100.0, 0.0, 100.0), (0.0, 0.0, 100.0))
         # self.magnetY = ((50.0, 0.0, 0.0), (50.0, 100.0, 0.0))
         # self.magnetZ = ((0.0, 50.0, 0.0), (0.0, 50.0, 200.0))
-        self.magnetX = ((100.0, 0.0, 0.0), (0.0, 0.0, 0.0))
-        self.magnetY = ((0.0, 100.0, 0.0), (0.0, 0.0, 0.0))
-        self.magnetZ = ((0.0, 0.0, 200.0), (0.0, 0.0, 0.0))
+        self.magnetX = ((71.0, 0.0, 0.0), (171.0, 0.0, 0.0))
+        self.magnetY = ((0.0, 71.0, 0.0), (0.0, 171.0, 0.0))
+        self.magnetZ = ((0.0, 0.0, 71.0), (0.0, 0.0, 271.0))
 
     def distances(self, point):  # in cm
         distZ = pnt2line(point, self.magnetZ[0], self.magnetZ[1])
@@ -99,24 +99,24 @@ class Magnet:
 
     def countFlux(self, distances):
         fluxX = self.current[0] * 2 * 10 ** (-7) / distances[0] * 100  # *100 to change unit from cm to m
-        print("========================")
-        print("Flux X:")
-        print(fluxX)
+        # print("========================")
+        # print("Flux X:")
+        # print(fluxX)
         fluxX = self.addNoise(fluxX)
-        print(fluxX)
+        # print(fluxX)
         fluxY = self.current[1] * 2 * 10 ** (-7) / distances[1] * 100  # *100 to change unit from cm to m
-        print("--------------------")
-        print("Flux Y:")
-        print(fluxY)
+        # print("--------------------")
+        # print("Flux Y:")
+        # print(fluxY)
         fluxY = self.addNoise(fluxY)
-        print(fluxY)
+        # print(fluxY)
         fluxZ = self.current[2] * 2 * 10 ** (-7) / distances[2] * 100  # *100 to change unit from cm to m
-        print("--------------------")
-        print("Flux Z:")
-        print(fluxZ)
+        # print("--------------------")
+        # print("Flux Z:")
+        # print(fluxZ)
         fluxZ = self.addNoise(fluxZ)
-        print(fluxZ)
-        print("========================")
+        # print(fluxZ)
+        # print("========================")
         return fluxX, fluxY, fluxZ
 
     def addNoise(self, flux):
