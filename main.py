@@ -1,3 +1,4 @@
+from numpy import mean
 from magnets import Magnet
 from sensor import Sensor
 import csv
@@ -36,6 +37,7 @@ meanFluxList = []
 for point in points:
     fluxList = []
     errorList = []
+    totalErrorList = []
     temp = magnet.distances(point.position)
     point.setDistance((temp[0][0], temp[1][0], temp[2][0]))
     for i in range(0, 10):
@@ -55,11 +57,12 @@ for point in points:
         # print("Error")
         # print(point.positionError)
         errorList.append(point.positionError)
+        totalErrorList.append(point.totalPositionError)
 
     fX, fY, fZ = meanOfList(fluxList)
     eX, eY, eZ = meanOfList(errorList)
 
-    meanFluxList.append([point.position, (fX, fY, fZ), (eX, eY, eZ)])
+    meanFluxList.append([point.position, (fX, fY, fZ), (eX, eY, eZ), mean(totalErrorList)])
 
 print(meanFluxList[0])
 print(len(meanFluxList))
@@ -68,9 +71,9 @@ f = open('test.csv', 'w')
 writer = csv.writer(f)
 
 writer.writerow(("X", "Y", "Z", "Received flux X", "Received flux X", "Received flux X",
-                 "Error X", "Error Y", "Error Z"))
+                 "Error X", "Error Y", "Error Z", "Total position error"))
 for row in meanFluxList:
     # print(row)
     writer.writerow((row[0][0], row[0][1], row[0][2], row[1][0], row[1][1],
-                     row[1][2], row[2][0], row[2][1], row[2][2]))
+                     row[1][2], row[2][0], row[2][1], row[2][2], row[3]))
 f.close()

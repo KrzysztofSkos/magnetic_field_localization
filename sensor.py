@@ -8,6 +8,7 @@ class Sensor:
     positionEstimated = [0.0, 0.0, 0.0]
     distanceEstimated = [0.0, 0.0, 0.0]
     positionError = [0.0, 0.0, 0.0]
+    totalPositionError = 0.0
 
     def __init__(self, pos):
         self.position = pos
@@ -43,3 +44,9 @@ class Sensor:
         self.positionError[0] = abs(self.position[0] - self.positionEstimated[0])
         self.positionError[1] = abs(self.position[1] - self.positionEstimated[1])
         self.positionError[2] = abs(self.position[2] - self.positionEstimated[2])
+        self.calculateTotalPositionError()
+
+    def calculateTotalPositionError(self):
+        self.totalPositionError = sqrt(self.positionError[0] ** 2 + self.positionError[1] ** 2
+                                       + self.positionError[2] ** 2)
+
