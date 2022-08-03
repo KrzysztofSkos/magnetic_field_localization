@@ -5,6 +5,11 @@ import csv
 
 
 def meanOfList(list1):
+    """
+    This method calculates means of first, second and third values of list of three element lists
+    :param list1: List of 3 element lists
+    :return: list of means
+    """
     X = 0
     Y = 0
     Z = 0
