@@ -1,3 +1,9 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Aug 03 16:52:07 2022
+@author: krzysztof_skos
+"""
 from numpy import mean
 from magnets import Magnet
 from sensor import Sensor
