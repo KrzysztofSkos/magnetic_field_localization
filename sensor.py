@@ -8,8 +8,15 @@ from math import sqrt
 
 
 class Sensor:
-    """
-    This class represents a nano sensor (magnetometer) operating in magnetic field
+    """This class represents a nano sensor (magnetometer) operating in magnetic field
+
+    :param [ParamName]: [ParamDescription], defaults to [DefaultParamVal]
+    :type [ParamName]: [ParamType](, optional)
+    ...
+    :raises [ErrorType]: [ErrorDescription]
+    ...
+    :return: [ReturnDescription]
+    :rtype: [ReturnType]
     """
     position = (0.0, 0.0, 0.0)  # Position (x, y, z)
     distance = [0.0, 0.0, 0.0]  # Distance calculated

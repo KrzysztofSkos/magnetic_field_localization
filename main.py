@@ -7,6 +7,8 @@ Created on Aug 03 16:52:07 2022
 from numpy import mean
 from magnets import Magnet
 from sensor import Sensor
+import matplotlib.pyplot as plt
+import matplotlib.colors
 import csv
 
 
@@ -88,3 +90,28 @@ for row in meanFluxList:
     writer.writerow((row[0][0], row[0][1], row[0][2], row[1][0], row[1][1],
                      row[1][2], row[2][0], row[2][1], row[2][2], row[3]))
 f.close()
+
+# # Counting max error
+# maxX = 0
+# maxY = 0
+# maxZ = 0
+# for row in meanFluxList:
+#     if row[2][0] > maxX:
+#         maxX = row[2][0]
+#     if row[2][1] > maxY:
+#         maxY = row[2][1]
+#     if row[2][2] > maxZ:
+#         maxZ = row[2][2]
+# print((maxX, maxY, maxZ))
+#
+# # with plt.ion():
+#
+# fig = plt.figure()
+# ax = fig.add_subplot(projection='3d')
+# normalize = matplotlib.colors.Normalize(vmin=0, vmax=maxX)
+# # Rysowanie błędu dla magnesu X
+# for row in meanFluxList:
+#     ax.scatter3D(row[0][0], row[0][1], row[0][2], c=row[2][0], norm=normalize)
+# ax.view_init(0, 0)
+# fig.show()
+#
