@@ -20,7 +20,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Quick Start Guide" href="quick_start.html" />
-    <link rel="prev" title="Welcome to Mgnetic field localization’s documentation!" href="../index.html" /> 
+    <link rel="prev" title="Welcome to Magnetic field localization’s documentation!" href="../index.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -43,8 +43,15 @@
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Magnetic Field Localization</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#about-project">About project</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#test-scenario">Test scenario</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#parameters">Parameters</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#results">Results</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#permeability-of-human-tissues">Permeability of human tissues</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#parameters">Parameters</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#teslameter-parameters">Teslameter parameters</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#results">Results</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#teslameter-results">Teslameter results</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="quick_start.html">Quick Start Guide</a></li>
@@ -89,12 +96,22 @@
 <p>Each sensor measures the magnetic flux for each magnet (with added noise).</p>
 <p>In the test scenario, all measurements are calculated simultaneously. However, it is assumed that magnets are powered sequentially.</p>
 </section>
+<section id="permeability-of-human-tissues">
+<h2>Permeability of human tissues<a class="headerlink" href="#permeability-of-human-tissues" title="Permalink to this heading"></a></h2>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This chapter is based on:</p>
+<p>G. Shimonov, A. Koren, G. Sivek and E. Socher, “Electromagnetic Property Characterization of Biological Tissues at D-Band,” in IEEE Transactions on Terahertz Science and Technology, vol. 8, no. 2, pp. 155-160, March 2018, doi: 10.1109/TTHZ.2018.2789357.</p>
+</div>
+<img alt="../_images/perm_mean.PNG" src="../_images/perm_mean.PNG" />
+<img alt="../_images/perm_tissue.PNG" src="../_images/perm_tissue.PNG" />
+</section>
 <section id="parameters">
 <h2>Parameters<a class="headerlink" href="#parameters" title="Permalink to this heading"></a></h2>
 <p>In this section, there are parameters used in the test simulation.</p>
 <ol class="arabic simple">
 <li><p>Current [I] = 135 kA</p></li>
-<li><p>Magnetic flux [M] = 27 T</p></li>
+<li><p>Magnetic flux [M] = 27 T (1 mm from magnet)</p></li>
 <li><p>Magnetometer sensitivity = 0,22 V/T</p></li>
 </ol>
 <div class="admonition note">
@@ -103,6 +120,28 @@
 <p>M. Banjevic, B. Furrer and R. S. Popovic, “2D CMOS integrated magnetometer based on the miniaturized circular vertical Hall device,” TRANSDUCERS 2009 - 2009 International Solid-State Sensors, Actuators and Microsystems Conference, 2009, pp. 877-880, DOI: 10.1109/SENSOR.2009.5285857.</p>
 <p>In the future, there is a plan to use more accurate sensors for simulations.</p>
 </div>
+<section id="teslameter-parameters">
+<h3>Teslameter parameters<a class="headerlink" href="#teslameter-parameters" title="Permalink to this heading"></a></h3>
+<ol class="arabic simple">
+<li><p>Current [I] = 20 kA</p></li>
+<li><p>Magnetic flux [M] = 4 T (1 mm from magnet)</p></li>
+<li><p>Teslameter sensitivity = 0,4 V/T</p></li>
+<li><p>Teslameter resolutiom = 0,1 ppm</p></li>
+<li><p>Teslameter accuracy = 50 ppm</p></li>
+</ol>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This Teslameter’s parameters are based on:</p>
+<p>Dragana Popovic Renella, Sasa Dimitrijevic, Sasa Spasic, Radivoje S. Popovic,”High-accuracy teslameter with thin high-resolution three-axis Hall probe”, Measurement,Volume 98, 2017, Pages 407-413, ISSN 0263-2241, <a class="reference external" href="https://doi.org/10.1016/j.measurement.2015.06.023">https://doi.org/10.1016/j.measurement.2015.06.023</a>.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>For safety, magnetic flux density was based on MRI parameters:</p>
+<p>John F. Schenck, “Physical interactions of static magnetic fields with living tissues”, Progress in Biophysics and Molecular Biology, Volume 87, Issues 2–3, 2005, Pages 185-204, ISSN 0079-6107, <a class="reference external" href="https://doi.org/10.1016/j.pbiomolbio.2004.08.009">https://doi.org/10.1016/j.pbiomolbio.2004.08.009</a>.</p>
+<img alt="../_images/mri_field.png" src="../_images/mri_field.png" />
+<p>Fig: “Field, gradient and force product along the axis of a large 4 T, whole-body  uperconducting magnet. The center of the magnet is at z = 0 and the bore ends at z = 1:02 m: The maximum gradient is 2.78 T/m at z = 1:47 m: The maximum value of B(dB/dz) is 8.79 T^2/m at z = 1:14 m (Reprinted, with permission, from Schenck et al., 1992).”</p>
+</div>
+</section>
 </section>
 <section id="results">
 <h2>Results<a class="headerlink" href="#results" title="Permalink to this heading"></a></h2>
@@ -110,6 +149,12 @@
 <p>The directional error is a difference between calculated and measured flux for each magnet. A total position error is a length of a vector composed of directional errors.</p>
 <p>Sensor positions are depicted below. Their colours reflect total position errors. The brighter the colour is, the bigger the error. Maximal calculated error equals 9,7 cm.</p>
 <img alt="../_images/results.png" src="../_images/results.png" />
+<section id="teslameter-results">
+<h3>Teslameter results<a class="headerlink" href="#teslameter-results" title="Permalink to this heading"></a></h3>
+<p>For teslameter Maximal calculated error equals 1,33 cm.</p>
+<p>Magnetic flux density ~ 1-4 mT.</p>
+<img alt="../_images/results_teslameter.png" src="../_images/results_teslameter.png" />
+</section>
 </section>
 </section>
 
@@ -117,7 +162,7 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="../index.html" class="btn btn-neutral float-left" title="Welcome to Mgnetic field localization’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../index.html" class="btn btn-neutral float-left" title="Welcome to Magnetic field localization’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="quick_start.html" class="btn btn-neutral float-right" title="Quick Start Guide" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
