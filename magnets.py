@@ -135,9 +135,10 @@ class Magnet:
     magnetX = ((71.0, 0.0, 0.0), (171.0, 0.0, 0.0))  # points creating vector X (magnet X) in cm
     magnetY = ((0.0, 71.0, 0.0), (0.0, 171.0, 0.0))  # points creating vector Y (magnet Y) in cm
     magnetZ = ((0.0, 0.0, 71.0), (0.0, 0.0, 271.0))  # points creating vector Z (magnet Z) in cm
-    magneticFlux = (27.0, 27.0, 27.0)  # (0.027, 0.027, 0.027)  # Maximal magnetic flux (near the wire) in T
-    current = (135000.0, 135000.0, 135000.0)  # (135.0, 135.0, 135.0)  # Current in magnets in A
-    noise = (80 * 10 ** (-6), 300 * 10 ** (-6))  # noise range in T
+    magneticFlux = (4.0, 4.0, 4.0)  # (0.027, 0.027, 0.027)  # Maximal magnetic flux (near the wire) in T
+    current = (20000.0, 20000.0, 20000.0)  # (135.0, 135.0, 135.0)  # Current in magnets in A
+    # noise = (80 * 10 ** (-6), 300 * 10 ** (-6))  # noise range in T
+    noise = (4 * 10 ** (-6), 6 * 10 ** (-6))  # noise range in T
 
     def __init__(self):
         """
