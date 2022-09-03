@@ -135,10 +135,12 @@ class Magnet:
     magnetX = ((71.0, 0.0, 0.0), (171.0, 0.0, 0.0))  # points creating vector X (magnet X) in cm
     magnetY = ((0.0, 71.0, 0.0), (0.0, 171.0, 0.0))  # points creating vector Y (magnet Y) in cm
     magnetZ = ((0.0, 0.0, 71.0), (0.0, 0.0, 271.0))  # points creating vector Z (magnet Z) in cm
-    magneticFlux = (4.0, 4.0, 4.0)  # (0.027, 0.027, 0.027)  # Maximal magnetic flux (near the wire) in T
-    current = (20000.0, 20000.0, 20000.0)  # (135.0, 135.0, 135.0)  # Current in magnets in A
-    # noise = (80 * 10 ** (-6), 300 * 10 ** (-6))  # noise range in T
-    noise = (4 * 10 ** (-6), 6 * 10 ** (-6))  # noise range in T
+    # magneticFlux = (4.0, 4.0, 4.0)  # (0.027, 0.027, 0.027)  # Maximal magnetic flux (near the wire) in T
+    magneticFlux = (27.0, 27.0, 27.0)  # (0.027, 0.027, 0.027)  # Maximal magnetic flux (near the wire) in T
+    current = (135000.0, 135000.0, 135000.0)  # (135.0, 135.0, 135.0)  # Current in magnets in A
+    # current = (20000.0, 20000.0, 20000.0)  # (135.0, 135.0, 135.0)  # Current in magnets in A
+    noise = (-300 * 10 ** (-6), 300 * 10 ** (-6))  # noise range in T
+    # noise = (4 * 10 ** (-6), 6 * 10 ** (-6))  # noise range in T
 
     def __init__(self):
         """
@@ -147,9 +149,20 @@ class Magnet:
         # self.magnetX = ((100.0, 0.0, 100.0), (0.0, 0.0, 100.0))
         # self.magnetY = ((50.0, 0.0, 0.0), (50.0, 100.0, 0.0))
         # self.magnetZ = ((0.0, 50.0, 0.0), (0.0, 50.0, 200.0))
+        # 1m from magnets
         self.magnetX = ((71.0, 0.0, 0.0), (171.0, 0.0, 0.0))
         self.magnetY = ((0.0, 71.0, 0.0), (0.0, 171.0, 0.0))
         self.magnetZ = ((0.0, 0.0, 71.0), (0.0, 0.0, 271.0))
+
+        # 0.5m from magnets
+        # self.magnetX = ((36.0, 0.0, 0.0), (136.0, 0.0, 0.0))
+        # self.magnetY = ((0.0, 36.0, 0.0), (0.0, 136.0, 0.0))
+        # self.magnetZ = ((0.0, 0.0, 36.0), (0.0, 0.0, 236.0))
+
+        # 1mm from magnets
+        # self.magnetX = ((0.0, 0.0, 0.0), (100.0, 0.0, 0.0))
+        # self.magnetY = ((0.0, 0.0, 0.0), (0.0, 100.0, 0.0))
+        # self.magnetZ = ((0.0, 0.0, 0.0), (0.0, 0.0, 220.0))
 
     def distances(self, point):
         """

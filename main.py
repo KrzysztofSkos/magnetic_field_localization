@@ -80,10 +80,10 @@ for point in points:
 print(meanFluxList[0])
 print(len(meanFluxList))
 
-f = open('test.csv', 'w')
+f = open('test2.csv', 'w')
 writer = csv.writer(f)
 
-writer.writerow(("X", "Y", "Z", "Received flux X", "Received flux X", "Received flux X",
+writer.writerow(("X", "Y", "Z", "Received flux X", "Received flux Y", "Received flux Z",
                  "Error X", "Error Y", "Error Z", "Total position error"))
 for row in meanFluxList:
     # print(row)

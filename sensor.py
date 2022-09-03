@@ -63,6 +63,7 @@ class Sensor:
         """
         This method estimates the sensor position from estimated distances. Output is in cm
         """
+        print((self.distanceEstimated[0], self.distanceEstimated[1], self.distanceEstimated[2]))
         self.positionEstimated[0] = sqrt((self.distanceEstimated[1] ** 2 + self.distanceEstimated[2] ** 2 -
                                           self.distanceEstimated[0] ** 2) / 2)
         self.positionEstimated[1] = sqrt((self.distanceEstimated[0] ** 2 + self.distanceEstimated[2] ** 2 -
