@@ -21,14 +21,25 @@ def meanOfList(list1):
     X = 0
     Y = 0
     Z = 0
+    counterX = 0
+    counterY = 0
+    counterZ = 0
     for fl in list1:
-        X += fl[0]
-        Y += fl[1]
-        Z += fl[2]
-    lenList = len(list1)
-    X = X / lenList
-    Y = Y / lenList
-    Z = Z / lenList
+        if fl[0] is not None:
+            X += fl[0]
+            counterX += 1
+        if fl[1] is not None:
+            Y += fl[1]
+            counterY += 1
+        if fl[2] is not None:
+            Z += fl[2]
+            counterZ += 1
+    if counterX != 0:
+        X = X / counterX
+    if counterY != 0:
+        Y = Y / counterY
+    if counterZ != 0:
+        Z = Z / counterZ
     return X, Y, Z
 
 

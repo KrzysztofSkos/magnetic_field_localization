@@ -64,26 +64,47 @@ class Sensor:
         This method estimates the sensor position from estimated distances. Output is in cm
         """
         print((self.distanceEstimated[0], self.distanceEstimated[1], self.distanceEstimated[2]))
-        self.positionEstimated[0] = sqrt((self.distanceEstimated[1] ** 2 + self.distanceEstimated[2] ** 2 -
-                                          self.distanceEstimated[0] ** 2) / 2)
-        self.positionEstimated[1] = sqrt((self.distanceEstimated[0] ** 2 + self.distanceEstimated[2] ** 2 -
-                                          self.distanceEstimated[1] ** 2) / 2)
-        self.positionEstimated[2] = sqrt((self.distanceEstimated[0] ** 2 + self.distanceEstimated[1] ** 2 -
-                                          self.distanceEstimated[2] ** 2) / 2)
+        try:
+            self.positionEstimated[0] = sqrt((self.distanceEstimated[1] ** 2 + self.distanceEstimated[2] ** 2 -
+                                              self.distanceEstimated[0] ** 2) / 2)
+        except:
+            self.positionEstimated[0] = None
+        try:
+            self.positionEstimated[1] = sqrt((self.distanceEstimated[0] ** 2 + self.distanceEstimated[2] ** 2 -
+                                              self.distanceEstimated[1] ** 2) / 2)
+        except:
+            self.positionEstimated[1] = None
+        try:
+            self.positionEstimated[2] = sqrt((self.distanceEstimated[0] ** 2 + self.distanceEstimated[1] ** 2 -
+                                              self.distanceEstimated[2] ** 2) / 2)
+        except:
+            self.positionEstimated[2] = None
+        # print ((self.positionEstimated[0], self.positionEstimated[1], self.positionEstimated[2]))
 
     def calculatePositionError(self):
         """
         This method calculates position error for each sensor coordinate. Output is in cm
         """
-        self.positionError[0] = abs(self.position[0] - self.positionEstimated[0])
-        self.positionError[1] = abs(self.position[1] - self.positionEstimated[1])
-        self.positionError[2] = abs(self.position[2] - self.positionEstimated[2])
+        try:
+            self.positionError[0] = abs(self.position[0] - self.positionEstimated[0])
+        except:
+            self.positionError[0] = None
+        try:
+            self.positionError[1] = abs(self.position[1] - self.positionEstimated[1])
+        except:
+            self.positionError[1] = None
+        try:
+            self.positionError[2] = abs(self.position[2] - self.positionEstimated[2])
+        except:
+            self.positionError[2] = None
         self.calculateTotalPositionError()
 
     def calculateTotalPositionError(self):
         """
         This method calculates total position sensor error form errors for coordinates. Output is in cm
         """
-        self.totalPositionError = sqrt(self.positionError[0] ** 2 + self.positionError[1] ** 2
+        try:
+            self.totalPositionError = sqrt(self.positionError[0] ** 2 + self.positionError[1] ** 2
                                        + self.positionError[2] ** 2)
-
+        except:
+            self.totalPositionError = None
