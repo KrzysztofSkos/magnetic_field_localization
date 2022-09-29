@@ -7,8 +7,6 @@ Created on Aug 03 16:52:07 2022
 from numpy import mean
 from magnets import Magnet
 from sensor import Sensor
-import matplotlib.pyplot as plt
-import matplotlib.colors
 import csv
 
 
@@ -41,6 +39,23 @@ def meanOfList(list1):
     if counterZ != 0:
         Z = Z / counterZ
     return X, Y, Z
+
+
+def meanOfError(list1):
+    """
+        This method calculates means of a list that may contain None values
+        :param list1: List of values
+        :return: Mean of not None values
+        """
+    X = 0
+    counterX = 0
+    for fl in list1:
+        if fl is not None:
+            X += fl
+            counterX += 1
+    if counterX != 0:
+        X = X / counterX
+    return X
 
 
 magnet = Magnet()
@@ -86,7 +101,7 @@ for point in points:
     fX, fY, fZ = meanOfList(fluxList)
     eX, eY, eZ = meanOfList(errorList)
 
-    meanFluxList.append([point.position, (fX, fY, fZ), (eX, eY, eZ), mean(totalErrorList)])
+    meanFluxList.append([point.position, (fX, fY, fZ), (eX, eY, eZ), meanOfError(totalErrorList)])
 
 print(meanFluxList[0])
 print(len(meanFluxList))
