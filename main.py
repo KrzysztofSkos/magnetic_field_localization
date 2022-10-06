@@ -9,6 +9,8 @@ from magnets import Magnet
 from sensor import Sensor
 import csv
 
+tryCounter = 0
+
 
 def meanOfList(list1):
     """
@@ -16,6 +18,7 @@ def meanOfList(list1):
     :param list1: List of 3 element lists
     :return: list of means
     """
+    global tryCounter
     X = 0
     Y = 0
     Z = 0
@@ -26,18 +29,30 @@ def meanOfList(list1):
         if fl[0] is not None:
             X += fl[0]
             counterX += 1
+        else:
+            tryCounter += 1
         if fl[1] is not None:
             Y += fl[1]
             counterY += 1
+        else:
+            tryCounter += 1
         if fl[2] is not None:
             Z += fl[2]
             counterZ += 1
+        else:
+            tryCounter += 1
     if counterX != 0:
         X = X / counterX
+    else:
+        X = None
     if counterY != 0:
         Y = Y / counterY
+    else:
+        Y = None
     if counterZ != 0:
         Z = Z / counterZ
+    else:
+        Z = None
     return X, Y, Z
 
 
@@ -55,6 +70,9 @@ def meanOfError(list1):
             counterX += 1
     if counterX != 0:
         X = X / counterX
+    else:
+        print("uwaga")
+        X = None
     return X
 
 
@@ -105,6 +123,21 @@ for point in points:
 
 print(meanFluxList[0])
 print(len(meanFluxList))
+
+lista = []
+for la in meanFluxList:
+    lista.append(la[3])
+print(lista)
+con = 0
+lista2 = []
+for la in lista:
+    if la is not None:
+        lista2.append(la)
+    else:
+        con += 1
+print(con)
+print(mean(lista2))
+print(tryCounter)
 
 f = open('test2.csv', 'w')
 writer = csv.writer(f)
