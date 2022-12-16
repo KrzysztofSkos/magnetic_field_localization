@@ -5,6 +5,7 @@ Created on Aug 03 16:52:07 2022
 @author: krzysztof_skos
 """
 from math import sqrt
+import numpy as np
 
 
 class Sensor:
@@ -20,9 +21,18 @@ class Sensor:
     """
     position = (0.0, 0.0, 0.0)  # Position (x, y, z)
     distance = [0.0, 0.0, 0.0]  # Distance calculated
+    distanceX = [0.0, 0.0, 0.0, 0.0, 0.0]
+    distanceY = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+    distanceZ = [0.0, 0.0, 0.0, 0.0]
     flux = [0.0, 0.0, 0.0]
+    fluxX = [0.0, 0.0, 0.0, 0.0, 0.0]
+    fluxY = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+    fluxZ = [0.0, 0.0, 0.0, 0.0]
     positionEstimated = [0.0, 0.0, 0.0]
     distanceEstimated = [0.0, 0.0, 0.0]
+    distanceEstimatedX = [0.0, 0.0, 0.0, 0.0, 0.0]
+    distanceEstimatedY = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+    distanceEstimatedZ = [0.0, 0.0, 0.0, 0.0]
     positionError = [0.0, 0.0, 0.0]
     totalPositionError = 0.0
 
@@ -42,6 +52,25 @@ class Sensor:
         self.distance[1] = dist[1]
         self.distance[2] = dist[2]
 
+    def setDistance15(self, dist):
+        self.distanceX[0] = dist[0]
+        self.distanceX[1] = dist[1]
+        self.distanceX[2] = dist[2]
+        self.distanceX[3] = dist[3]
+        self.distanceX[4] = dist[4]
+
+        self.distanceY[0] = dist[5]
+        self.distanceY[1] = dist[6]
+        self.distanceY[2] = dist[7]
+        self.distanceY[3] = dist[8]
+        self.distanceY[4] = dist[9]
+        self.distanceY[5] = dist[10]
+
+        self.distanceZ[0] = dist[11]
+        self.distanceZ[1] = dist[12]
+        self.distanceZ[2] = dist[13]
+        self.distanceZ[3] = dist[14]
+
     def setFlux(self, flux):
         """
         Flux setter.
@@ -51,6 +80,36 @@ class Sensor:
         self.flux[1] = flux[1]
         self.flux[2] = flux[2]
 
+    def setFlux15(self, flux):
+        self.fluxX[0] = flux[0]
+        self.fluxX[1] = flux[1]
+        self.fluxX[2] = flux[2]
+        self.fluxX[3] = flux[3]
+        self.fluxX[4] = flux[4]
+
+        self.fluxY[0] = flux[5]
+        self.fluxY[1] = flux[6]
+        self.fluxY[2] = flux[7]
+        self.fluxY[3] = flux[8]
+        self.fluxY[4] = flux[9]
+        self.fluxY[5] = flux[10]
+
+        self.fluxZ[0] = flux[11]
+        self.fluxZ[1] = flux[12]
+        self.fluxZ[2] = flux[13]
+        self.fluxZ[3] = flux[14]
+
+
+
+
+    def calculateEstimatedDistance15(self, current):
+        for i in range(len(self.fluxX)):
+            self.distanceEstimatedX[i] = current[0] * 2 * 10 ** (-7) / self.fluxX[i] * 100
+        for i in range(len(self.fluxY)):
+            self.distanceEstimatedY[i] = current[0] * 2 * 10 ** (-7) / self.fluxY[i] * 100
+        for i in range(len(self.fluxZ)):
+            self.distanceEstimatedZ[i] = current[0] * 2 * 10 ** (-7) / self.fluxZ[i] * 100
+
     def calculateEstimatedDistance(self, current):
         """
         This method estimates distance from measured flux. Output is in cm
@@ -58,6 +117,50 @@ class Sensor:
         self.distanceEstimated[0] = current[0] * 2 * 10 ** (-7) / self.flux[0] * 100  # *100 to change unit from cm to m
         self.distanceEstimated[1] = current[1] * 2 * 10 ** (-7) / self.flux[1] * 100  # *100 to change unit from cm to m
         self.distanceEstimated[2] = current[2] * 2 * 10 ** (-7) / self.flux[2] * 100  # *100 to change unit from cm to m
+
+    def calculateEstimatedPosition15_X(self):
+        A = [[100.0, 0.0], # y1, 0
+             [0.0, 100.0], # 0, z1
+             [0.0, 200.0], # 0, z2
+             [100.0, 200.0]] # y1, 0
+        B = [self.distanceEstimatedX[0] ** 2 - self.distanceEstimatedX[1] ** 2 + 100 ** 2,
+             self.distanceEstimatedX[0] ** 2 - self.distanceEstimatedX[2] ** 2 + 100 ** 2,
+             self.distanceEstimatedX[0] ** 2 - self.distanceEstimatedX[3] ** 2 + 200 ** 2,
+             self.distanceEstimatedX[0] ** 2 - self.distanceEstimatedX[4] ** 2 + 100 ** 2 + 200 ** 2]
+        R = (np.transpose(A) * A) ** (-1) * np.transpose(A) * B
+        return R
+
+    def calculateEstimatedPosition15_Y(self):
+        A = [[100.0, 0.0],  # x1, 0
+             [0.0, 100.0],  # 0, z1
+             [100.0, 100.0],  # x1, z1
+             [0.0, 200.0],  # 0, z2
+             [100.0, 200.0]]  # x1, z2
+        B = [self.distanceEstimatedY[0] ** 2 - self.distanceEstimatedY[1] ** 2 + 100 ** 2,
+             self.distanceEstimatedY[0] ** 2 - self.distanceEstimatedY[2] ** 2 + 100 ** 2,
+             self.distanceEstimatedY[0] ** 2 - self.distanceEstimatedY[3] ** 2 + 100 ** 2 + 100 ** 2,
+             self.distanceEstimatedY[0] ** 2 - self.distanceEstimatedY[4] ** 2 + 200 ** 2,
+             self.distanceEstimatedY[0] ** 2 - self.distanceEstimatedY[5] ** 2 + 100 ** 2 + 200 ** 2,]
+        R = (np.transpose(A) * A) ** (-1) * np.transpose(A) * B
+        return R
+
+    def calculateEstimatedPosition15_Z(self):
+        A = [[100.0, 0.0],  # x1, y1
+             [0.0, 100.0],  # 0, y1
+             [100.0, 00.0]]  # x1, 0
+        B = [self.distanceEstimatedZ[0] ** 2 - self.distanceEstimatedZ[1] ** 2 + 100 ** 2 + 100 ** 2,
+             self.distanceEstimatedZ[0] ** 2 - self.distanceEstimatedZ[2] ** 2 + 100 ** 2,
+             self.distanceEstimatedZ[0] ** 2 - self.distanceEstimatedZ[3] ** 2 + 100 ** 2]
+        R = (np.transpose(A) * A) ** (-1) * np.transpose(A) * B
+        return R
+
+    def calculateEstimatedPosition15(self):
+        y1, z1 = self.calculateEstimatedPosition15_X() # weight 5
+        x1, z2 = self.calculateEstimatedPosition15_Y() # weight 6
+        x2, y2 = self.calculateEstimatedPosition15_Z() # weight 4
+        self.positionEstimated[0] = (6 * x1 + 6 * x2) / 10
+        self.positionEstimated[1] = (5 * y1 + 4 * y2) / 9
+        self.positionEstimated[2] = (6 * z1 + 5 * z2) / 11
 
     def calculateEstimatedPosition(self):
         """

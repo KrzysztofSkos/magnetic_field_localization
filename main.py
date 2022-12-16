@@ -3203,7 +3203,7 @@ for i in range(len(lookup2)):
 
 points = []
 for i in range(len(lookup2)):
-    points.append(Sensor((float(lookup2[i]['x']+71), float(lookup2[i]['z']+71), float(lookup2[i]['y']+71))))
+    points.append(Sensor((float(lookup2[i]['x']+1), float(lookup2[i]['z']+1), float(lookup2[i]['y']+1))))
 # for x in range(71, 171, 10):
 #     for y in range(71, 171, 10):
 #         for z in range(71, 271, 10):
@@ -3216,13 +3216,15 @@ for point in points:
     fluxList = []
     errorList = []
     totalErrorList = []
-    temp = magnet.distances(point.position)
-    point.setDistance((temp[0][0], temp[1][0], temp[2][0]))
+    temp = magnet.distances15(point.position)
+    print(temp)
+    point.setDistance15(temp)
     for i in range(0, 10):
-        point.setFlux(magnet.countFlux(point.distance))
+        # print (point.distanceX + point.distanceY + point.distanceZ)
+        point.setFlux15(magnet.countFlux15(point.distanceX + point.distanceY + point.distanceZ))
         fluxList.append(point.flux)
-        point.calculateEstimatedDistance(magnet.current)
-        point.calculateEstimatedPosition()
+        point.calculateEstimatedDistance15(magnet.current)
+        point.calculateEstimatedPosition15()
         point.calculatePositionError()
         # print("===========================")
         # print(point.flux)
@@ -3260,7 +3262,7 @@ print(con)
 print(mean(lista2))
 print(tryCounter)
 
-f = open('test2_human_body.csv', 'w')
+f = open('test3_human_body_15_magnets.csv', 'w')
 writer = csv.writer(f)
 
 writer.writerow(("X", "Y", "Z", "Received flux X", "Received flux Y", "Received flux Z",

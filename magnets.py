@@ -132,12 +132,27 @@ class Magnet:
     """
     This class represents a system of three wires acting as magnets in 3d Cartesian coordinate system
     """
-    magnetX = ((71.0, 0.0, 0.0), (171.0, 0.0, 0.0))  # points creating vector X (magnet X) in cm
-    magnetY = ((0.0, 71.0, 0.0), (0.0, 171.0, 0.0))  # points creating vector Y (magnet Y) in cm
-    magnetZ = ((0.0, 0.0, 71.0), (0.0, 0.0, 271.0))  # points creating vector Z (magnet Z) in cm
+    magnetX1 = ((0.0, 0.0, 0.0), (100.0, 0.0, 0.0))  # points creating vector X (magnet X) in cm
+    magnetX2 = ((0.0, 100.0, 0.0), (100.0, 100.0, 0.0))
+    magnetX3 = ((0.0, 0.0, 100.0), (100.0, 0.0, 100.0))
+    magnetX4 = ((0.0, 0.0, 200.0), (100.0, 0.0, 200.0))
+    magnetX5 = ((0.0, 100.0, 200.0), (100.0, 100.0, 200.0))
+
+    magnetY1 = ((0.0, 0.0, 0.0), (0.0, 100.0, 0.0))  # points creating vector Y (magnet Y) in cm
+    magnetY2 = ((100.0, 0.0, 0.0), (100.0, 100.0, 0.0))
+    magnetY3 = ((0.0, 0.0, 100.0), (0.0, 100.0, 100.0))
+    magnetY4 = ((100.0, 0.0, 100.0), (100.0, 100.0, 100.0))
+    magnetY5 = ((0.0, 0.0, 200.0), (0.0, 100.0, 200.0))
+    magnetY6 = ((100.0, 0.0, 200.0), (100.0, 100.0, 200.0))
+
+    magnetZ1 = ((0.0, 0.0, 0.0), (0.0, 0.0, 200.0))  # points creating vector Z (magnet Z) in cm
+    magnetZ2 = ((100.0, 100.0, 0.0), (100.0, 100.0, 200.0))
+    magnetZ3 = ((0.0, 100.0, 0.0), (0.0, 100.0, 200.0))
+    magnetZ4 = ((100.0, 0.0, 0.0), (100.0, 0.0, 200.0))
+
     # magneticFlux = (4.0, 4.0, 4.0)  # (0.027, 0.027, 0.027)  # Maximal magnetic flux (near the wire) in T
-    magneticFlux = (27.0, 27.0, 27.0)  # (0.027, 0.027, 0.027)  # Maximal magnetic flux (near the wire) in T
-    current = (135000.0, 135000.0, 135000.0)  # (135.0, 135.0, 135.0)  # Current in magnets in A
+    magneticFlux = (0.027, 0.027, 0.027)  # (27.0, 27.0, 27.0)   # Maximal magnetic flux (near the wire) in T
+    current = (135.0, 135.0, 135.0) # (135000.0, 135000.0, 135000.0)  # (135.0, 135.0, 135.0)  # Current in magnets in A [Amperes]
     # current = (20000.0, 20000.0, 20000.0)  # (135.0, 135.0, 135.0)  # Current in magnets in A
     noise = (-300 * 10 ** (-6), 300 * 10 ** (-6))  # noise range in T
     # noise = (4 * 10 ** (-6), 6 * 10 ** (-6))  # noise range in T
@@ -174,6 +189,73 @@ class Magnet:
         distY = pnt2line(point, self.magnetY[0], self.magnetY[1])
         distX = pnt2line(point, self.magnetX[0], self.magnetX[1])
         return distX, distY, distZ
+
+    def distances15(self, point):
+        distX = []
+        distY = []
+        distZ = []
+        distX.append(pnt2line(point, self.magnetX1[0], self.magnetX1[1])[0])
+        distX.append(pnt2line(point, self.magnetX2[0], self.magnetX2[1])[0])
+        distX.append(pnt2line(point, self.magnetX3[0], self.magnetX3[1])[0])
+        distX.append(pnt2line(point, self.magnetX4[0], self.magnetX4[1])[0])
+        distX.append(pnt2line(point, self.magnetX5[0], self.magnetX5[1])[0])
+
+        distY.append(pnt2line(point, self.magnetY1[0], self.magnetY1[1])[0])
+        distY.append(pnt2line(point, self.magnetY2[0], self.magnetY2[1])[0])
+        distY.append(pnt2line(point, self.magnetY3[0], self.magnetY3[1])[0])
+        distY.append(pnt2line(point, self.magnetY4[0], self.magnetY4[1])[0])
+        distY.append(pnt2line(point, self.magnetY5[0], self.magnetY5[1])[0])
+        distY.append(pnt2line(point, self.magnetY6[0], self.magnetY6[1])[0])
+
+        distZ.append(pnt2line(point, self.magnetZ1[0], self.magnetZ1[1])[0])
+        distZ.append(pnt2line(point, self.magnetZ2[0], self.magnetZ2[1])[0])
+        distZ.append(pnt2line(point, self.magnetZ3[0], self.magnetZ3[1])[0])
+        distZ.append(pnt2line(point, self.magnetZ4[0], self.magnetZ4[1])[0])
+
+        print (distX)
+        print (distY)
+        print (distZ)
+        return distX + distY + distZ
+
+    def countFlux15(self, distances):
+        fluxX = []
+        fluxY = []
+        fluxZ = []
+
+        temp = self.current[0] * 2 * 10 ** (-7) / distances[0] * 100 # *100 to change unit from cm to m)
+        fluxX.append(self.addNoise(temp))
+        temp = self.current[0] * 2 * 10 ** (-7) / distances[1] * 100
+        fluxX.append(self.addNoise(temp))
+        temp = self.current[0] * 2 * 10 ** (-7) / distances[2] * 100
+        fluxX.append(self.addNoise(temp))
+        temp = self.current[0] * 2 * 10 ** (-7) / distances[3] * 100
+        fluxX.append(self.addNoise(temp))
+        temp = self.current[0] * 2 * 10 ** (-7) / distances[4] * 100
+        fluxX.append(self.addNoise(temp))
+
+        temp = self.current[0] * 2 * 10 ** (-7) / distances[5] * 100
+        fluxY.append(self.addNoise(temp))
+        temp = self.current[0] * 2 * 10 ** (-7) / distances[6] * 100
+        fluxY.append(self.addNoise(temp))
+        temp = self.current[0] * 2 * 10 ** (-7) / distances[7] * 100
+        fluxY.append(self.addNoise(temp))
+        temp = self.current[0] * 2 * 10 ** (-7) / distances[8] * 100
+        fluxY.append(self.addNoise(temp))
+        temp = self.current[0] * 2 * 10 ** (-7) / distances[9] * 100
+        fluxY.append(self.addNoise(temp))
+        temp = self.current[0] * 2 * 10 ** (-7) / distances[10] * 100
+        fluxY.append(self.addNoise(temp))
+
+        temp = self.current[0] * 2 * 10 ** (-7) / distances[11] * 100
+        fluxZ.append(self.addNoise(temp))
+        temp = self.current[0] * 2 * 10 ** (-7) / distances[12] * 100
+        fluxZ.append(self.addNoise(temp))
+        temp = self.current[0] * 2 * 10 ** (-7) / distances[13] * 100
+        fluxZ.append(self.addNoise(temp))
+        temp = self.current[0] * 2 * 10 ** (-7) / distances[13] * 100
+        fluxZ.append(self.addNoise(temp))
+
+        return fluxX + fluxY + fluxZ
 
     def countFlux(self, distances):
         """
