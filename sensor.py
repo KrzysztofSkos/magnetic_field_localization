@@ -66,7 +66,7 @@ class Sensor:
         # print((self.distanceEstimated[0], self.distanceEstimated[1], self.distanceEstimated[2]))
         try:
             self.positionEstimated[0] = sqrt((self.distanceEstimated[1] ** 2 + self.distanceEstimated[2] ** 2 -
-                                              self.distanceEstimated[0] ** 2) / 2)
+                                              self.distanceEstimated[0] ** 2)  / 2)
         except:
             self.positionEstimated[0] = None
         try:
