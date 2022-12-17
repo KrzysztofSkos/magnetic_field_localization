@@ -212,9 +212,9 @@ class Magnet:
         distZ.append(pnt2line(point, self.magnetZ3[0], self.magnetZ3[1])[0])
         distZ.append(pnt2line(point, self.magnetZ4[0], self.magnetZ4[1])[0])
 
-        print (distX)
-        print (distY)
-        print (distZ)
+        # print (distX)
+        # print (distY)
+        # print (distZ)
         return distX + distY + distZ
 
     def countFlux15(self, distances):

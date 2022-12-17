@@ -6,6 +6,7 @@ Created on Aug 03 16:52:07 2022
 """
 from math import sqrt
 import numpy as np
+import numpy.linalg
 
 
 class Sensor:
@@ -123,11 +124,18 @@ class Sensor:
              [0.0, 100.0], # 0, z1
              [0.0, 200.0], # 0, z2
              [100.0, 200.0]] # y1, 0
+        # A = [[100.0, 0.0, 0.0, 100.0],
+        #      [0.0, 100.0, 200.0, 200.0]]
         B = [self.distanceEstimatedX[0] ** 2 - self.distanceEstimatedX[1] ** 2 + 100 ** 2,
              self.distanceEstimatedX[0] ** 2 - self.distanceEstimatedX[2] ** 2 + 100 ** 2,
              self.distanceEstimatedX[0] ** 2 - self.distanceEstimatedX[3] ** 2 + 200 ** 2,
              self.distanceEstimatedX[0] ** 2 - self.distanceEstimatedX[4] ** 2 + 100 ** 2 + 200 ** 2]
-        R = (np.transpose(A) * A) ** (-1) * np.transpose(A) * B
+        A = np.array(A)
+        B = np.array(B)
+        # R = (np.transpose(A) * A) ** (-1) * np.transpose(A) * B
+        # R = np.matmul(np.matmul((np.matmul(np.transpose(A), A)) ** (-1), np.transpose(A)), B)
+        R = np.matmul(np.matmul(np.linalg.inv((np.matmul(np.transpose(A), A))), np.transpose(A)), B)
+
         return R
 
     def calculateEstimatedPosition15_Y(self):
@@ -141,7 +149,12 @@ class Sensor:
              self.distanceEstimatedY[0] ** 2 - self.distanceEstimatedY[3] ** 2 + 100 ** 2 + 100 ** 2,
              self.distanceEstimatedY[0] ** 2 - self.distanceEstimatedY[4] ** 2 + 200 ** 2,
              self.distanceEstimatedY[0] ** 2 - self.distanceEstimatedY[5] ** 2 + 100 ** 2 + 200 ** 2,]
-        R = (np.transpose(A) * A) ** (-1) * np.transpose(A) * B
+        A = np.array(A)
+        B = np.array(B)
+        # R = (np.transpose(A) * A) ** (-1) * np.transpose(A) * B
+        # R = np.matmul(np.matmul((np.matmul(np.transpose(A), A)) ** (-1), np.transpose(A)), B)
+        R = np.matmul(np.matmul(np.linalg.inv((np.matmul(np.transpose(A), A))), np.transpose(A)), B)
+
         return R
 
     def calculateEstimatedPosition15_Z(self):
@@ -151,13 +164,27 @@ class Sensor:
         B = [self.distanceEstimatedZ[0] ** 2 - self.distanceEstimatedZ[1] ** 2 + 100 ** 2 + 100 ** 2,
              self.distanceEstimatedZ[0] ** 2 - self.distanceEstimatedZ[2] ** 2 + 100 ** 2,
              self.distanceEstimatedZ[0] ** 2 - self.distanceEstimatedZ[3] ** 2 + 100 ** 2]
-        R = (np.transpose(A) * A) ** (-1) * np.transpose(A) * B
+        A = np.array(A)
+        B = np.array(B)
+        # R = (np.transpose(A) * A) ** (-1) * np.transpose(A) * B
+        test1 = np.matmul(np.transpose(A), A)
+        test4 = np.linalg.inv(np.matmul(np.transpose(A), A))
+        test2 = (np.matmul(np.transpose(A), A)) ** (-1)
+        test3 = np.matmul((np.matmul(np.transpose(A), A)) ** (-1), np.transpose(A))
+        R = np.matmul(np.matmul(np.linalg.inv((np.matmul(np.transpose(A), A))), np.transpose(A)), B)
         return R
 
     def calculateEstimatedPosition15(self):
         y1, z1 = self.calculateEstimatedPosition15_X() # weight 5
         x1, z2 = self.calculateEstimatedPosition15_Y() # weight 6
         x2, y2 = self.calculateEstimatedPosition15_Z() # weight 4
+        # print(x1)
+        # print(x2)
+        # print(y1)
+        # print(y2)
+        # print(z1)
+        # print(z2)
+
         self.positionEstimated[0] = (6 * x1 + 6 * x2) / 10
         self.positionEstimated[1] = (5 * y1 + 4 * y2) / 9
         self.positionEstimated[2] = (6 * z1 + 5 * z2) / 11

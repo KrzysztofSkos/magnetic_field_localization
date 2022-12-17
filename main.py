@@ -3217,7 +3217,7 @@ for point in points:
     errorList = []
     totalErrorList = []
     temp = magnet.distances15(point.position)
-    print(temp)
+    # print(temp)
     point.setDistance15(temp)
     for i in range(0, 10):
         # print (point.distanceX + point.distanceY + point.distanceZ)
