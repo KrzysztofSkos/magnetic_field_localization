@@ -115,21 +115,24 @@ class Sensor:
         """
         This method estimates distance from measured flux. Output is in cm
         """
-        self.distanceEstimated[0] = current[0] * 2 * 10 ** (-7) / self.flux[0] * 100  # *100 to change unit from cm to m
-        self.distanceEstimated[1] = current[1] * 2 * 10 ** (-7) / self.flux[1] * 100  # *100 to change unit from cm to m
-        self.distanceEstimated[2] = current[2] * 2 * 10 ** (-7) / self.flux[2] * 100  # *100 to change unit from cm to m
+        self.distanceEstimated[0] = current[0] * 2 * 10 ** (-7) / self.flux[0] * 100  # *100 to change unit from m to cm
+        self.distanceEstimated[1] = current[1] * 2 * 10 ** (-7) / self.flux[1] * 100  # *100 to change unit from m to cm
+        self.distanceEstimated[2] = current[2] * 2 * 10 ** (-7) / self.flux[2] * 100  # *100 to change unit from m to cm
 
     def calculateEstimatedPosition15_X(self):
-        A = [[100.0, 0.0], # y1, 0
-             [0.0, 100.0], # 0, z1
-             [0.0, 200.0], # 0, z2
-             [100.0, 200.0]] # y1, 0
+        y1 = 242.0 #100.0
+        z1 = 171.0 #100.0
+        z2 = 342.0 #200.0
+        A = [[y1, 0.0], # y1, 0
+             [0.0, z1], # 0, z1
+             [0.0, z2], # 0, z2
+             [y1, z2]] # y1, z2
         # A = [[100.0, 0.0, 0.0, 100.0],
         #      [0.0, 100.0, 200.0, 200.0]]
-        B = [self.distanceEstimatedX[0] ** 2 - self.distanceEstimatedX[1] ** 2 + 100 ** 2,
-             self.distanceEstimatedX[0] ** 2 - self.distanceEstimatedX[2] ** 2 + 100 ** 2,
-             self.distanceEstimatedX[0] ** 2 - self.distanceEstimatedX[3] ** 2 + 200 ** 2,
-             self.distanceEstimatedX[0] ** 2 - self.distanceEstimatedX[4] ** 2 + 100 ** 2 + 200 ** 2]
+        B = [(self.distanceEstimatedX[0] ** 2 - self.distanceEstimatedX[1] ** 2 + y1 ** 2) / 2,
+             (self.distanceEstimatedX[0] ** 2 - self.distanceEstimatedX[2] ** 2 + z1 ** 2) / 2,
+             (self.distanceEstimatedX[0] ** 2 - self.distanceEstimatedX[3] ** 2 + z2 ** 2) / 2,
+             (self.distanceEstimatedX[0] ** 2 - self.distanceEstimatedX[4] ** 2 + y1 ** 2 + z2 ** 2) / 2]
         A = np.array(A)
         B = np.array(B)
         # R = (np.transpose(A) * A) ** (-1) * np.transpose(A) * B
@@ -139,16 +142,19 @@ class Sensor:
         return R
 
     def calculateEstimatedPosition15_Y(self):
-        A = [[100.0, 0.0],  # x1, 0
-             [0.0, 100.0],  # 0, z1
-             [100.0, 100.0],  # x1, z1
-             [0.0, 200.0],  # 0, z2
-             [100.0, 200.0]]  # x1, z2
-        B = [self.distanceEstimatedY[0] ** 2 - self.distanceEstimatedY[1] ** 2 + 100 ** 2,
-             self.distanceEstimatedY[0] ** 2 - self.distanceEstimatedY[2] ** 2 + 100 ** 2,
-             self.distanceEstimatedY[0] ** 2 - self.distanceEstimatedY[3] ** 2 + 100 ** 2 + 100 ** 2,
-             self.distanceEstimatedY[0] ** 2 - self.distanceEstimatedY[4] ** 2 + 200 ** 2,
-             self.distanceEstimatedY[0] ** 2 - self.distanceEstimatedY[5] ** 2 + 100 ** 2 + 200 ** 2,]
+        x1 = 242.0 #100.0
+        z1 = 171.0 #100.0
+        z2 = 342.0 #200.0
+        A = [[x1, 0.0],  # x1, 0
+             [0.0, z1],  # 0, z1
+             [x1, z1],  # x1, z1
+             [0.0, z2],  # 0, z2
+             [x1, z2]]  # x1, z2
+        B = [(self.distanceEstimatedY[0] ** 2 - self.distanceEstimatedY[1] ** 2 + x1 ** 2) / 2,
+             (self.distanceEstimatedY[0] ** 2 - self.distanceEstimatedY[2] ** 2 + z1 ** 2) / 2,
+             (self.distanceEstimatedY[0] ** 2 - self.distanceEstimatedY[3] ** 2 + x1 ** 2 + z1 ** 2) / 2,
+             (self.distanceEstimatedY[0] ** 2 - self.distanceEstimatedY[4] ** 2 + z2 ** 2) / 2,
+             (self.distanceEstimatedY[0] ** 2 - self.distanceEstimatedY[5] ** 2 + x1 ** 2 + z2 ** 2) / 2]
         A = np.array(A)
         B = np.array(B)
         # R = (np.transpose(A) * A) ** (-1) * np.transpose(A) * B
@@ -158,19 +164,16 @@ class Sensor:
         return R
 
     def calculateEstimatedPosition15_Z(self):
-        A = [[100.0, 0.0],  # x1, y1
-             [0.0, 100.0],  # 0, y1
-             [100.0, 00.0]]  # x1, 0
-        B = [self.distanceEstimatedZ[0] ** 2 - self.distanceEstimatedZ[1] ** 2 + 100 ** 2 + 100 ** 2,
-             self.distanceEstimatedZ[0] ** 2 - self.distanceEstimatedZ[2] ** 2 + 100 ** 2,
-             self.distanceEstimatedZ[0] ** 2 - self.distanceEstimatedZ[3] ** 2 + 100 ** 2]
+        x1 = 242.0 #100.0
+        y1 = 242.0 #100.0
+        A = [[x1, y1],  # x1, y1
+             [0.0, y1],  # 0, y1
+             [x1, 0.0]]  # x1, 0
+        B = [(self.distanceEstimatedZ[0] ** 2 - self.distanceEstimatedZ[1] ** 2 + x1 ** 2 + y1 ** 2) / 2,
+             (self.distanceEstimatedZ[0] ** 2 - self.distanceEstimatedZ[2] ** 2 + y1 ** 2) / 2,
+             (self.distanceEstimatedZ[0] ** 2 - self.distanceEstimatedZ[3] ** 2 + x1 ** 2) / 2]
         A = np.array(A)
         B = np.array(B)
-        # R = (np.transpose(A) * A) ** (-1) * np.transpose(A) * B
-        test1 = np.matmul(np.transpose(A), A)
-        test4 = np.linalg.inv(np.matmul(np.transpose(A), A))
-        test2 = (np.matmul(np.transpose(A), A)) ** (-1)
-        test3 = np.matmul((np.matmul(np.transpose(A), A)) ** (-1), np.transpose(A))
         R = np.matmul(np.matmul(np.linalg.inv((np.matmul(np.transpose(A), A))), np.transpose(A)), B)
         return R
 

@@ -3201,9 +3201,36 @@ for i in range(len(lookup2)):
     lookup2[i]['y'] *= scale
     lookup2[i]['z'] *= scale
 
+minX = 1000
+minY = 1000
+minZ = 1000
+maxX = 0
+maxY = 0
+maxZ = 0
+for i in range(len(lookup2)):
+  if lookup2[i]['x'] <= minX:
+    minX = lookup2[i]['x']
+  elif lookup2[i]['x'] >= maxX:
+    maxX = lookup2[i]['x']
+  if lookup2[i]['y'] <= minY:
+    minY = lookup2[i]['y']
+  elif lookup2[i]['y'] >= maxY:
+    maxY = lookup2[i]['y']
+  if lookup2[i]['z'] <= minZ:
+    minZ = lookup2[i]['z']
+  elif lookup2[i]['z'] >= maxZ:
+    maxZ = lookup2[i]['z']
+
+print("min x " + str(minX))
+print("max x " + str(maxX))
+print("min y " + str(minY))
+print("max y " + str(maxY))
+print("min z " + str(minZ))
+print("max z " + str(maxZ))
+
 points = []
 for i in range(len(lookup2)):
-    points.append(Sensor((float(lookup2[i]['x']+1), float(lookup2[i]['z']+1), float(lookup2[i]['y']+1))))
+    points.append(Sensor((float(lookup2[i]['x']+71), float(lookup2[i]['z']+71), float(lookup2[i]['y']+71))))
 # for x in range(71, 171, 10):
 #     for y in range(71, 171, 10):
 #         for z in range(71, 271, 10):
@@ -3267,12 +3294,37 @@ writer = csv.writer(f)
 
 writer.writerow(("X", "Y", "Z", "Received flux X", "Received flux Y", "Received flux Z",
                  "Error X", "Error Y", "Error Z", "Total position error"))
+
+minX = 1000
+minY = 1000
+minZ = 1000
+maxX = 0
+maxY = 0
+maxZ = 0
 for row in meanFluxList:
     # print(row)
     writer.writerow((row[0][0], row[0][1], row[0][2], row[1][0], row[1][1],
                      row[1][2], row[2][0], row[2][1], row[2][2], row[3]))
+    if row[0][0] <= minX:
+      minX = row[0][0]
+    elif row[0][0] >= maxX:
+      maxX = row[0][0]
+    if row[0][1] <= minY:
+      minY = row[0][1]
+    elif row[0][1] >= maxY:
+      maxY = row[0][1]
+    if row[0][2] <= minZ:
+      minZ = row[0][2]
+    elif row[0][2] >= maxZ:
+      maxZ = row[0][2]
 f.close()
 
+print("min x " + str(minX))
+print("max x " + str(maxX))
+print("min y " + str(minY))
+print("max y " + str(maxY))
+print("min z " + str(minZ))
+print("max z " + str(maxZ))
 # # Counting max error
 # maxX = 0
 # maxY = 0
