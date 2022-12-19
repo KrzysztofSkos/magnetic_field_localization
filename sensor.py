@@ -166,12 +166,12 @@ class Sensor:
     def calculateEstimatedPosition15_Z(self):
         x1 = 242.0 #100.0
         y1 = 242.0 #100.0
-        A = [[x1, y1],  # x1, y1
+        A = [[x1, 0.0],  # x1, 0
              [0.0, y1],  # 0, y1
-             [x1, 0.0]]  # x1, 0
-        B = [(self.distanceEstimatedZ[0] ** 2 - self.distanceEstimatedZ[1] ** 2 + x1 ** 2 + y1 ** 2) / 2,
+             [x1, y1]]  # x1, y1
+        B = [(self.distanceEstimatedZ[0] ** 2 - self.distanceEstimatedZ[1] ** 2 + x1 ** 2) / 2,
              (self.distanceEstimatedZ[0] ** 2 - self.distanceEstimatedZ[2] ** 2 + y1 ** 2) / 2,
-             (self.distanceEstimatedZ[0] ** 2 - self.distanceEstimatedZ[3] ** 2 + x1 ** 2) / 2]
+             (self.distanceEstimatedZ[0] ** 2 - self.distanceEstimatedZ[3] ** 2 + x1 ** 2 + y1 ** 2) / 2]
         A = np.array(A)
         B = np.array(B)
         R = np.matmul(np.matmul(np.linalg.inv((np.matmul(np.transpose(A), A))), np.transpose(A)), B)
@@ -181,16 +181,20 @@ class Sensor:
         y1, z1 = self.calculateEstimatedPosition15_X() # weight 5
         x1, z2 = self.calculateEstimatedPosition15_Y() # weight 6
         x2, y2 = self.calculateEstimatedPosition15_Z() # weight 4
-        # print(x1)
-        # print(x2)
-        # print(y1)
-        # print(y2)
-        # print(z1)
-        # print(z2)
 
-        self.positionEstimated[0] = (6 * x1 + 6 * x2) / 10
+        self.positionEstimated[0] = (6 * x1 + 4 * x2) / 10
         self.positionEstimated[1] = (5 * y1 + 4 * y2) / 9
         self.positionEstimated[2] = (6 * z1 + 5 * z2) / 11
+
+        # print("X")
+        # print((self.position[0], x1, x2))
+        # print("Y")
+        # print((self.position[1], y1, y2))
+        # print("Z")
+        # print((self.position[2], z1, z2))
+        # print("Errors")
+        # print((abs(self.position[0]-self.positionEstimated[0]), abs(self.position[1]-self.positionEstimated[1]), abs(self.position[2]-self.positionEstimated[2])))
+        # print("=======================================")
 
     def calculateEstimatedPosition(self):
         """

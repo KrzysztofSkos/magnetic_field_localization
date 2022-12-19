@@ -3301,6 +3301,10 @@ minZ = 1000
 maxX = 0
 maxY = 0
 maxZ = 0
+errX = 0
+errY = 0
+errZ = 0
+
 for row in meanFluxList:
     # print(row)
     writer.writerow((row[0][0], row[0][1], row[0][2], row[1][0], row[1][1],
@@ -3317,6 +3321,11 @@ for row in meanFluxList:
       minZ = row[0][2]
     elif row[0][2] >= maxZ:
       maxZ = row[0][2]
+    errX += row[2][0]
+    errY += row[2][1]
+    errZ += row[2][2]
+
+
 f.close()
 
 print("min x " + str(minX))
@@ -3325,6 +3334,9 @@ print("min y " + str(minY))
 print("max y " + str(maxY))
 print("min z " + str(minZ))
 print("max z " + str(maxZ))
+print("error X " + str(errX/len(meanFluxList)))
+print("error Y " + str(errY/len(meanFluxList)))
+print("error Z " + str(errZ/len(meanFluxList)))
 # # Counting max error
 # maxX = 0
 # maxY = 0

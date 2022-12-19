@@ -182,9 +182,9 @@ class Magnet:
     magnetY6 = ((242.0, 0.0, 342.0), (242.0, 242.0, 342.0))
 
     magnetZ1 = ((0.0, 0.0, 0.0), (0.0, 0.0, 342.0))  # points creating vector Z (magnet Z) in cm
-    magnetZ2 = ((242.0, 242.0, 0.0), (242.0, 242.0, 342.0))
+    magnetZ2 = ((242.0, 0.0, 0.0), (242.0, 0.0, 342.0))
     magnetZ3 = ((0.0, 242.0, 0.0), (0.0, 242.0, 342.0))
-    magnetZ4 = ((242.0, 0.0, 0.0), (242.0, 0.0, 342.0))
+    magnetZ4 = ((242.0, 242.0, 0.0), (242.0, 242.0, 342.0))
 
     # magneticFlux = (4.0, 4.0, 4.0)  # (0.027, 0.027, 0.027)  # Maximal magnetic flux (near the wire) in T
     magneticFlux = (27.0, 27.0, 27.0)  # (0.027, 0.027, 0.027)  # (27.0, 27.0, 27.0)   # Maximal magnetic flux (near the wire) in T
@@ -201,9 +201,9 @@ class Magnet:
         # self.magnetY = ((50.0, 0.0, 0.0), (50.0, 100.0, 0.0))
         # self.magnetZ = ((0.0, 50.0, 0.0), (0.0, 50.0, 200.0))
         # 1m from magnets
-        self.magnetX = ((71.0, 0.0, 0.0), (171.0, 0.0, 0.0))
-        self.magnetY = ((0.0, 71.0, 0.0), (0.0, 171.0, 0.0))
-        self.magnetZ = ((0.0, 0.0, 71.0), (0.0, 0.0, 271.0))
+        # self.magnetX = ((71.0, 0.0, 0.0), (171.0, 0.0, 0.0))
+        # self.magnetY = ((0.0, 71.0, 0.0), (0.0, 171.0, 0.0))
+        # self.magnetZ = ((0.0, 0.0, 71.0), (0.0, 0.0, 271.0))
 
         # 0.5m from magnets
         # self.magnetX = ((36.0, 0.0, 0.0), (136.0, 0.0, 0.0))
