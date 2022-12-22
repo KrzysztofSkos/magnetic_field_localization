@@ -230,6 +230,7 @@ class Magnet:
         distX = []
         distY = []
         distZ = []
+
         distX.append(pnt2line(point, self.magnetX1[0], self.magnetX1[1])[0])
         distX.append(pnt2line(point, self.magnetX2[0], self.magnetX2[1])[0])
         distX.append(pnt2line(point, self.magnetX3[0], self.magnetX3[1])[0])
@@ -288,7 +289,7 @@ class Magnet:
         fluxZ.append(self.addNoise(temp))
         temp = self.current[0] * 2 * 10 ** (-7) / distances[13] * 100
         fluxZ.append(self.addNoise(temp))
-        temp = self.current[0] * 2 * 10 ** (-7) / distances[13] * 100
+        temp = self.current[0] * 2 * 10 ** (-7) / distances[14] * 100
         fluxZ.append(self.addNoise(temp))
 
         return fluxX + fluxY + fluxZ
