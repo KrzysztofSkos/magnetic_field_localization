@@ -40,12 +40,16 @@ class Sensor:
     z1 = 171.0
     z2 = 342.0
 
-    def __init__(self, pos):
+    def __init__(self, pos, x1, y1, z1, z2):
         """
         Sensor constructor
         :param pos: Sensor position in 3d Cartesian coordinate system. Value in cm
         """
         self.position = pos
+        self.x1 = x1
+        self.y1 = y1
+        self.z1 = z1
+        self.z2 = z2
 
 
     def setDistance15(self, distancesX, distancesY, distancesZ):

@@ -133,109 +133,49 @@ class Magnet:
     """
     This class represents a system of three wires acting as magnets in 3d Cartesian coordinate system
     """
-    # magnetX1 = ((0.0, 0.0, 0.0), (100.0, 0.0, 0.0))  # points creating vector X (magnet X) in cm
-    # magnetX2 = ((0.0, 100.0, 0.0), (100.0, 100.0, 0.0))
-    # magnetX3 = ((0.0, 0.0, 100.0), (100.0, 0.0, 100.0))
-    # magnetX4 = ((0.0, 0.0, 200.0), (100.0, 0.0, 200.0))
-    # magnetX5 = ((0.0, 100.0, 200.0), (100.0, 100.0, 200.0))
-    #
-    # magnetY1 = ((0.0, 0.0, 0.0), (0.0, 100.0, 0.0))  # points creating vector Y (magnet Y) in cm
-    # magnetY2 = ((100.0, 0.0, 0.0), (100.0, 100.0, 0.0))
-    # magnetY3 = ((0.0, 0.0, 100.0), (0.0, 100.0, 100.0))
-    # magnetY4 = ((100.0, 0.0, 100.0), (100.0, 100.0, 100.0))
-    # magnetY5 = ((0.0, 0.0, 200.0), (0.0, 100.0, 200.0))
-    # magnetY6 = ((100.0, 0.0, 200.0), (100.0, 100.0, 200.0))
-    #
-    # magnetZ1 = ((0.0, 0.0, 0.0), (0.0, 0.0, 200.0))  # points creating vector Z (magnet Z) in cm
-    # magnetZ2 = ((100.0, 100.0, 0.0), (100.0, 100.0, 200.0))
-    # magnetZ3 = ((0.0, 100.0, 0.0), (0.0, 100.0, 200.0))
-    # magnetZ4 = ((100.0, 0.0, 0.0), (100.0, 0.0, 200.0))
-
-    # magnetX1 = ((71.0, 0.0, 0.0), (171.0, 0.0, 0.0))  # points creating vector X (magnet X) in cm
-    # magnetX2 = ((71.0, 242.0, 0.0), (171.0, 242.0, 0.0))
-    # magnetX3 = ((71.0, 0.0, 171.0), (171.0, 0.0, 171.0))
-    # magnetX4 = ((71.0, 0.0, 342.0), (171.0, 0.0, 342.0))
-    # magnetX5 = ((71.0, 242.0, 342.0), (171.0, 242.0, 342.0))
-    #
-    # magnetY1 = ((0.0, 71.0, 0.0), (0.0, 171.0, 0.0))  # points creating vector Y (magnet Y) in cm
-    # magnetY2 = ((242.0, 71.0, 0.0), (242.0, 171.0, 0.0))
-    # magnetY3 = ((0.0, 71.0, 171.0), (0.0, 171.0, 171.0))
-    # magnetY4 = ((242.0, 71.0, 171.0), (242.0, 171.0, 171.0))
-    # magnetY5 = ((0.0, 71.0, 342.0), (0.0, 171.0, 342.0))
-    # magnetY6 = ((242.0, 71.0, 342.0), (242.0, 171.0, 342.0))
-    #
-    # magnetZ1 = ((0.0, 0.0, 71.0), (0.0, 0.0, 271.0))  # points creating vector Z (magnet Z) in cm
-    # magnetZ2 = ((242.0, 242.0, 71.0), (242.0, 242.0, 271.0))
-    # magnetZ3 = ((0.0, 242.0, 71.0), (0.0, 242.0, 271.0))
-    # magnetZ4 = ((242.0, 0.0, 71.0), (242.0, 0.0, 271.0))
     magnetsX = []
     magnetsY = []
     magnetsZ = []
-    # magnetX1 = ((0.0, 0.0, 0.0), (242.0, 0.0, 0.0))  # points creating vector X (magnet X) in cm
-    # magnetX2 = ((0.0, 242.0, 0.0), (242.0, 242.0, 0.0))
-    # magnetX3 = ((0.0, 0.0, 171.0), (242.0, 0.0, 171.0))
-    # magnetX4 = ((0.0, 0.0, 342.0), (242.0, 0.0, 342.0))
-    # magnetX5 = ((0.0, 242.0, 342.0), (242.0, 242.0, 342.0))
 
-    # magnetY1 = ((0.0, 0.0, 0.0), (0.0, 242.0, 0.0))  # points creating vector Y (magnet Y) in cm
-    # magnetY2 = ((242.0, 0.0, 0.0), (242.0, 242.0, 0.0))
-    # magnetY3 = ((0.0, 0.0, 171.0), (0.0, 242.0, 171.0))
-    # magnetY4 = ((242.0, 0.0, 171.0), (242.0, 242.0, 171.0))
-    # magnetY5 = ((0.0, 0.0, 342.0), (0.0, 242.0, 342.0))
-    # magnetY6 = ((242.0, 0.0, 342.0), (242.0, 242.0, 342.0))
-    #
-    # magnetZ1 = ((0.0, 0.0, 0.0), (0.0, 0.0, 342.0))  # points creating vector Z (magnet Z) in cm
-    # magnetZ2 = ((242.0, 0.0, 0.0), (242.0, 0.0, 342.0))
-    # magnetZ3 = ((0.0, 242.0, 0.0), (0.0, 242.0, 342.0))
-    # magnetZ4 = ((242.0, 242.0, 0.0), (242.0, 242.0, 342.0))
+    x1 = 242.0
+    y1 = 242.0
+    z1 = 171.0
+    z2 = 342.0
 
     # magneticFlux = (4.0, 4.0, 4.0)  # (0.027, 0.027, 0.027)  # Maximal magnetic flux (near the wire) in T
-    magneticFlux = (27.0, 27.0, 27.0)  # (0.027, 0.027, 0.027)  # (27.0, 27.0, 27.0)   # Maximal magnetic flux (near the wire) in T
-    current = (135000.0, 135000.0, 135000.0) # (135000.0, 135000.0, 135000.0)  # (135.0, 135.0, 135.0)  # Current in magnets in A [Amperes]
+    # magneticFlux = (27.0, 27.0, 27.0)  # (0.027, 0.027, 0.027)  # (27.0, 27.0, 27.0)   # Maximal magnetic flux (near the wire) in T
+    # current = (135000.0, 135000.0, 135000.0) # (135000.0, 135000.0, 135000.0)  # (135.0, 135.0, 135.0)  # Current in magnets in A [Amperes]
     # current = (20000.0, 20000.0, 20000.0)  # (135.0, 135.0, 135.0)  # Current in magnets in A
     noise = (-300 / np.power(10, 6), 300 / np.power(10, 6))  # noise range in T
     # noise = (-5 * np.power(10, -6), 5 * np.power(10, -6))
     # noise = (4 * np.power(10, -6), 6 * np.power(10, -6))  # noise range in T
 
-    def __init__(self):
+    def __init__(self, x1, y1, z1, z2):
         """
         Class constructor
         """
+        self.x1 = x1
+        self.y1 = y1
+        self.z1 = z1
+        self.z2 = z2
         # points creating vector X (magnet X) in cm
-        self.magnetsX.append(((0.0, 0.0, 0.0), (242.0, 0.0, 0.0)))
-        self.magnetsX.append(((0.0, 242.0, 0.0), (242.0, 242.0, 0.0)))
-        self.magnetsX.append(((0.0, 0.0, 171.0), (242.0, 0.0, 171.0)))
-        self.magnetsX.append(((0.0, 0.0, 342.0), (242.0, 0.0, 342.0)))
-        self.magnetsX.append(((0.0, 242.0, 342.0), (242.0, 242.0, 342.0)))
+        self.magnetsX.append(((0.0, 0.0, 0.0), (self.x1, 0.0, 0.0)))
+        self.magnetsX.append(((0.0, self.y1, 0.0), (self.x1, self.y1, 0.0)))
+        self.magnetsX.append(((0.0, 0.0, self.z1), (self.x1, 0.0, self.z1)))
+        self.magnetsX.append(((0.0, 0.0, self.z2), (self.x1, 0.0, self.z2)))
+        self.magnetsX.append(((0.0, self.y1, self.z2), (self.x1, self.y1, self.z2)))
         # points creating vector Y (magnet Y) in cm
-        self.magnetsY.append(((0.0, 0.0, 0.0), (0.0, 242.0, 0.0)))
-        self.magnetsY.append(((242.0, 0.0, 0.0), (242.0, 242.0, 0.0)))
-        self.magnetsY.append(((0.0, 0.0, 171.0), (0.0, 242.0, 171.0)))
-        self.magnetsY.append(((242.0, 0.0, 171.0), (242.0, 242.0, 171.0)))
-        self.magnetsY.append(((0.0, 0.0, 342.0), (0.0, 242.0, 342.0)))
-        self.magnetsY.append(((242.0, 0.0, 342.0), (242.0, 242.0, 342.0)))
+        self.magnetsY.append(((0.0, 0.0, 0.0), (0.0, self.y1, 0.0)))
+        self.magnetsY.append(((self.x1, 0.0, 0.0), (self.x1, self.y1, 0.0)))
+        self.magnetsY.append(((0.0, 0.0, self.z1), (0.0, self.y1, self.z1)))
+        self.magnetsY.append(((self.x1, 0.0, self.z1), (self.x1, self.y1, self.z1)))
+        self.magnetsY.append(((0.0, 0.0, self.z2), (0.0, self.y1, self.z2)))
+        self.magnetsY.append(((self.x1, 0.0, self.z2), (self.x1, self.y1, self.z2)))
         # points creating vector Z (magnet Z) in cm
-        self.magnetsZ.append(((0.0, 0.0, 0.0), (0.0, 0.0, 342.0)))
-        self.magnetsZ.append(((242.0, 0.0, 0.0), (242.0, 0.0, 342.0)))
-        self.magnetsZ.append(((0.0, 242.0, 0.0), (0.0, 242.0, 342.0)))
-        self.magnetsZ.append(((242.0, 242.0, 0.0), (242.0, 242.0, 342.0)))
-        # self.magnetX = ((100.0, 0.0, 100.0), (0.0, 0.0, 100.0))
-        # self.magnetY = ((50.0, 0.0, 0.0), (50.0, 100.0, 0.0))
-        # self.magnetZ = ((0.0, 50.0, 0.0), (0.0, 50.0, 200.0))
-        # 1m from magnets
-        # self.magnetX = ((71.0, 0.0, 0.0), (171.0, 0.0, 0.0))
-        # self.magnetY = ((0.0, 71.0, 0.0), (0.0, 171.0, 0.0))
-        # self.magnetZ = ((0.0, 0.0, 71.0), (0.0, 0.0, 271.0))
-
-        # 0.5m from magnets
-        # self.magnetX = ((36.0, 0.0, 0.0), (136.0, 0.0, 0.0))
-        # self.magnetY = ((0.0, 36.0, 0.0), (0.0, 136.0, 0.0))
-        # self.magnetZ = ((0.0, 0.0, 36.0), (0.0, 0.0, 236.0))
-
-        # 1mm from magnets
-        # self.magnetX = ((0.0, 0.0, 0.0), (100.0, 0.0, 0.0))
-        # self.magnetY = ((0.0, 0.0, 0.0), (0.0, 100.0, 0.0))
-        # self.magnetZ = ((0.0, 0.0, 0.0), (0.0, 0.0, 220.0))
+        self.magnetsZ.append(((0.0, 0.0, 0.0), (0.0, 0.0, self.z2)))
+        self.magnetsZ.append(((self.x1, 0.0, 0.0), (self.x1, 0.0, self.z2)))
+        self.magnetsZ.append(((0.0, self.y1, 0.0), (0.0, self.y1, self.z2)))
+        self.magnetsZ.append(((self.x1, self.y1, 0.0), (self.x1, self.y1, self.z2)))
 
     def distances15(self, point):
         distX = []
