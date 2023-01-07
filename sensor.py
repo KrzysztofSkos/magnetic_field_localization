@@ -35,6 +35,11 @@ class Sensor:
     positionError = [0.0, 0.0, 0.0]
     totalPositionError = 0.0
 
+    x1 = 242.0
+    y1 = 242.0
+    z1 = 171.0
+    z2 = 342.0
+
     def __init__(self, pos):
         """
         Sensor constructor
@@ -83,17 +88,17 @@ class Sensor:
 
 
     def calculateEstimatedPosition15_X(self):
-        y1 = 242.0 #100.0
-        z1 = 171.0 #100.0
-        z2 = 342.0 #200.0
-        A = [[y1, 0.0], # y1, 0
-             [0.0, z1], # 0, z1
-             [0.0, z2], # 0, z2
-             [y1, z2]] # y1, z2
-        B = [(np.power(self.distanceEstimatedX[0], 2) - np.power(self.distanceEstimatedX[1], 2) + np.power(y1, 2)) / 2,
-             (np.power(self.distanceEstimatedX[0], 2) - np.power(self.distanceEstimatedX[2], 2) + np.power(z1, 2)) / 2,
-             (np.power(self.distanceEstimatedX[0], 2) - np.power(self.distanceEstimatedX[3], 2) + np.power(z2, 2)) / 2,
-             (np.power(self.distanceEstimatedX[0], 2) - np.power(self.distanceEstimatedX[4], 2) + np.power(y1, 2) + np.power(z2, 2)) / 2]
+        # y1 = 242.0 #100.0
+        # z1 = 171.0 #100.0
+        # z2 = 342.0 #200.0
+        A = [[self.y1, 0.0], # y1, 0
+             [0.0, self.z1], # 0, z1
+             [0.0, self.z2], # 0, z2
+             [self.y1, self.z2]] # y1, z2
+        B = [(np.power(self.distanceEstimatedX[0], 2) - np.power(self.distanceEstimatedX[1], 2) + np.power(self.y1, 2)) / 2,
+             (np.power(self.distanceEstimatedX[0], 2) - np.power(self.distanceEstimatedX[2], 2) + np.power(self.z1, 2)) / 2,
+             (np.power(self.distanceEstimatedX[0], 2) - np.power(self.distanceEstimatedX[3], 2) + np.power(self.z2, 2)) / 2,
+             (np.power(self.distanceEstimatedX[0], 2) - np.power(self.distanceEstimatedX[4], 2) + np.power(self.y1, 2) + np.power(self.z2, 2)) / 2]
         A = np.array(A)
         B = np.array(B)
         # R = (np.transpose(A) * A) ** (-1) * np.transpose(A) * B
@@ -102,19 +107,19 @@ class Sensor:
         return R
 
     def calculateEstimatedPosition15_Y(self):
-        x1 = 242.0 #100.0
-        z1 = 171.0 #100.0
-        z2 = 342.0 #200.0
-        A = [[x1, 0.0],  # x1, 0
-             [0.0, z1],  # 0, z1
-             [x1, z1],  # x1, z1
-             [0.0, z2],  # 0, z2
-             [x1, z2]]  # x1, z2
-        B = [(np.power(self.distanceEstimatedY[0], 2) - np.power(self.distanceEstimatedY[1], 2) + np.power(x1, 2)) / 2,
-             (np.power(self.distanceEstimatedY[0], 2) - np.power(self.distanceEstimatedY[2], 2) + np.power(z1, 2)) / 2,
-             (np.power(self.distanceEstimatedY[0], 2) - np.power(self.distanceEstimatedY[3], 2) + np.power(x1, 2) + np.power(z1, 2)) / 2,
-             (np.power(self.distanceEstimatedY[0], 2) - np.power(self.distanceEstimatedY[4], 2) + np.power(z2, 2)) / 2,
-             (np.power(self.distanceEstimatedY[0], 2) - np.power(self.distanceEstimatedY[5], 2) + np.power(x1, 2) + np.power(z2, 2)) / 2]
+        # x1 = 242.0 #100.0
+        # z1 = 171.0 #100.0
+        # z2 = 342.0 #200.0
+        A = [[self.x1, 0.0],  # x1, 0
+             [0.0, self.z1],  # 0, z1
+             [self.x1, self.z1],  # x1, z1
+             [0.0, self.z2],  # 0, z2
+             [self.x1, self.z2]]  # x1, z2
+        B = [(np.power(self.distanceEstimatedY[0], 2) - np.power(self.distanceEstimatedY[1], 2) + np.power(self.x1, 2)) / 2,
+             (np.power(self.distanceEstimatedY[0], 2) - np.power(self.distanceEstimatedY[2], 2) + np.power(self.z1, 2)) / 2,
+             (np.power(self.distanceEstimatedY[0], 2) - np.power(self.distanceEstimatedY[3], 2) + np.power(self.x1, 2) + np.power(self.z1, 2)) / 2,
+             (np.power(self.distanceEstimatedY[0], 2) - np.power(self.distanceEstimatedY[4], 2) + np.power(self.z2, 2)) / 2,
+             (np.power(self.distanceEstimatedY[0], 2) - np.power(self.distanceEstimatedY[5], 2) + np.power(self.x1, 2) + np.power(self.z2, 2)) / 2]
         A = np.array(A)
         B = np.array(B)
         # R = (np.transpose(A) * A) ** (-1) * np.transpose(A) * B
@@ -124,27 +129,31 @@ class Sensor:
         return R
 
     def calculateEstimatedPosition15_Z(self):
-        x1 = 242.0 #100.0
-        y1 = 242.0 #100.0
-        A = [[x1, 0.0],  # x1, 0
-             [0.0, y1],  # 0, y1
-             [x1, y1]]  # x1, y1
-        B = [(np.power(self.distanceEstimatedZ[0], 2) - np.power(self.distanceEstimatedZ[1], 2) + np.power(x1, 2)) / 2,
-             (np.power(self.distanceEstimatedZ[0], 2) - np.power(self.distanceEstimatedZ[2], 2) + np.power(y1, 2)) / 2,
-             (np.power(self.distanceEstimatedZ[0], 2) - np.power(self.distanceEstimatedZ[3], 2) + np.power(x1, 2) + np.power(y1, 2)) / 2]
+        # x1 = 242.0 #100.0
+        # y1 = 242.0 #100.0
+        A = [[self.x1, 0.0],  # x1, 0
+             [0.0, self.y1],  # 0, y1
+             [self.x1, self.y1]]  # x1, y1
+        B = [(np.power(self.distanceEstimatedZ[0], 2) - np.power(self.distanceEstimatedZ[1], 2) + np.power(self.x1, 2)) / 2,
+             (np.power(self.distanceEstimatedZ[0], 2) - np.power(self.distanceEstimatedZ[2], 2) + np.power(self.y1, 2)) / 2,
+             (np.power(self.distanceEstimatedZ[0], 2) - np.power(self.distanceEstimatedZ[3], 2) + np.power(self.x1, 2) + np.power(self.y1, 2)) / 2]
         A = np.array(A)
         B = np.array(B)
         R = np.matmul(np.matmul(np.linalg.inv((np.matmul(np.transpose(A), A))), np.transpose(A)), B)
         return R
 
     def calculateEstimatedPosition15(self):
+        weightX = len(self.fluxX)
+        weightY = len(self.fluxY)
+        weightZ = len(self.fluxZ)
+
         y1, z1 = self.calculateEstimatedPosition15_X() # weight 5
         x1, z2 = self.calculateEstimatedPosition15_Y() # weight 6
         x2, y2 = self.calculateEstimatedPosition15_Z() # weight 4
 
-        self.positionEstimated[0] = (6 * x1 + 4 * x2) / 10
-        self.positionEstimated[1] = (5 * y1 + 4 * y2) / 9
-        self.positionEstimated[2] = (6 * z1 + 5 * z2) / 11
+        self.positionEstimated[0] = (weightY * x1 + weightZ * x2) / 10
+        self.positionEstimated[1] = (weightX * y1 + weightZ * y2) / 9
+        self.positionEstimated[2] = (weightY * z1 + weightX * z2) / 11
 
 
 
