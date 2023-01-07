@@ -260,15 +260,18 @@ class Magnet:
 
         for dist in distancesX:
             temp = self.current[0] * 2 / np.power(10, 7) / dist * 100
-            fluxX.append(self.addNoise(temp))
+            # fluxX.append(self.addNoise(temp))
+            fluxX.append(self.addDependentNoise(temp))
 
         for dist in distancesY:
             temp = self.current[0] * 2 / np.power(10, 7) / dist * 100
-            fluxY.append(self.addNoise(temp))
+            # fluxY.append(self.addNoise(temp))
+            fluxY.append(self.addDependentNoise(temp))
 
         for dist in distancesZ:
             temp = self.current[0] * 2 / np.power(10, 7) / dist * 100
-            fluxZ.append(self.addNoise(temp))
+            # fluxZ.append(self.addNoise(temp))
+            fluxZ.append(self.addDependentNoise(temp))
 
         return fluxX, fluxY, fluxZ
 
@@ -282,4 +285,8 @@ class Magnet:
         :return: flux with noise. Value in T
         """
         flux += uniform(self.noise[0], self.noise[1])
+        return flux
+
+    def addDependentNoise(self, flux):
+        flux += uniform(-0.01 * flux, 0.01 * flux)
         return flux
