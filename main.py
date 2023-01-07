@@ -3221,12 +3221,12 @@ for i in range(len(lookup2)):
   elif lookup2[i]['z'] >= maxZ:
     maxZ = lookup2[i]['z']
 
-print("min x " + str(minX))
-print("max x " + str(maxX))
-print("min y " + str(minY))
-print("max y " + str(maxY))
-print("min z " + str(minZ))
-print("max z " + str(maxZ))
+# print("min x " + str(minX))
+# print("max x " + str(maxX))
+# print("min y " + str(minY))
+# print("max y " + str(maxY))
+# print("min z " + str(minZ))
+# print("max z " + str(maxZ))
 
 points = []
 for i in range(len(lookup2)):
@@ -3243,33 +3243,27 @@ for point in points:
     fluxList = []
     errorList = []
     totalErrorList = []
-    temp = magnet.distances15(point.position)
+    tempX, tempY, tempZ = magnet.distances15(point.position)
     # print(temp)
-    point.setDistance15(temp)
+    point.setDistance15(tempX, tempY, tempZ)
     for i in range(0, 10):
         # print (point.distanceX + point.distanceY + point.distanceZ)
-        point.setFlux15(magnet.countFlux15(point.distanceX + point.distanceY + point.distanceZ))
-        fluxList.append(point.flux)
+        tempX, tempY, tempZ = magnet.countFlux15(point.distanceX, point.distanceY, point.distanceZ)
+        point.setFlux15(tempX, tempY, tempZ)
+
+
+        #fluxList.append(point.flux)
         point.calculateEstimatedDistance15(magnet.current)
         point.calculateEstimatedPosition15()
         point.calculatePositionError()
-        # print("===========================")
-        # print(point.flux)
-        # print("Position")
-        # print(point.position)
-        # print(point.positionEstimated)
-        # print("Distance")
-        # print(point.distance)
-        # print(point.distanceEstimated)
-        # print("Error")
-        # print(point.positionError)
         errorList.append(point.positionError)
         totalErrorList.append(point.totalPositionError)
 
-    fX, fY, fZ = meanOfList(fluxList)
+    # fX, fY, fZ = meanOfList(fluxList)
     eX, eY, eZ = meanOfList(errorList)
 
-    meanFluxList.append([point.position, (fX, fY, fZ), (eX, eY, eZ), meanOfError(totalErrorList)])
+    # meanFluxList.append([point.position, (fX, fY, fZ), (eX, eY, eZ), meanOfError(totalErrorList)])
+    meanFluxList.append([point.position, (0, 0, 0), (eX, eY, eZ), meanOfError(totalErrorList)])
 
 print(meanFluxList[0])
 print(len(meanFluxList))
@@ -3289,10 +3283,10 @@ print(con)
 print(mean(lista2))
 print(tryCounter)
 
-f = open('test3_human_body_15_magnets.csv', 'w')
+f = open('test3_human_body_15_magnets_WorkInProgress.csv', 'w')
 writer = csv.writer(f)
 
-writer.writerow(("X", "Y", "Z", "Received flux X", "Received flux Y", "Received flux Z",
+writer.writerow(("X", "Y", "Z", "Received flux X (not in use)", "Received flux Y (not in use)", "Received flux Z (not in use)",
                  "Error X", "Error Y", "Error Z", "Total position error"))
 
 minX = 1000
@@ -3328,12 +3322,12 @@ for row in meanFluxList:
 
 f.close()
 
-print("min x " + str(minX))
-print("max x " + str(maxX))
-print("min y " + str(minY))
-print("max y " + str(maxY))
-print("min z " + str(minZ))
-print("max z " + str(maxZ))
+# print("min x " + str(minX))
+# print("max x " + str(maxX))
+# print("min y " + str(minY))
+# print("max y " + str(maxY))
+# print("min z " + str(minZ))
+# print("max z " + str(maxZ))
 print("error X " + str(errX/len(meanFluxList)))
 print("error Y " + str(errY/len(meanFluxList)))
 print("error Z " + str(errZ/len(meanFluxList)))

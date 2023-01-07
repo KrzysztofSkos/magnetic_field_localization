@@ -6,6 +6,7 @@ Created on Aug 03 16:52:07 2022
 """
 import math
 from random import uniform
+import numpy as np
 
 
 # Given a line with coordinates 'start' and 'end' and the
@@ -167,36 +168,57 @@ class Magnet:
     # magnetZ2 = ((242.0, 242.0, 71.0), (242.0, 242.0, 271.0))
     # magnetZ3 = ((0.0, 242.0, 71.0), (0.0, 242.0, 271.0))
     # magnetZ4 = ((242.0, 0.0, 71.0), (242.0, 0.0, 271.0))
+    magnetsX = []
+    magnetsY = []
+    magnetsZ = []
+    # magnetX1 = ((0.0, 0.0, 0.0), (242.0, 0.0, 0.0))  # points creating vector X (magnet X) in cm
+    # magnetX2 = ((0.0, 242.0, 0.0), (242.0, 242.0, 0.0))
+    # magnetX3 = ((0.0, 0.0, 171.0), (242.0, 0.0, 171.0))
+    # magnetX4 = ((0.0, 0.0, 342.0), (242.0, 0.0, 342.0))
+    # magnetX5 = ((0.0, 242.0, 342.0), (242.0, 242.0, 342.0))
 
-    magnetX1 = ((0.0, 0.0, 0.0), (242.0, 0.0, 0.0))  # points creating vector X (magnet X) in cm
-    magnetX2 = ((0.0, 242.0, 0.0), (242.0, 242.0, 0.0))
-    magnetX3 = ((0.0, 0.0, 171.0), (242.0, 0.0, 171.0))
-    magnetX4 = ((0.0, 0.0, 342.0), (242.0, 0.0, 342.0))
-    magnetX5 = ((0.0, 242.0, 342.0), (242.0, 242.0, 342.0))
-
-    magnetY1 = ((0.0, 0.0, 0.0), (0.0, 242.0, 0.0))  # points creating vector Y (magnet Y) in cm
-    magnetY2 = ((242.0, 0.0, 0.0), (242.0, 242.0, 0.0))
-    magnetY3 = ((0.0, 0.0, 171.0), (0.0, 242.0, 171.0))
-    magnetY4 = ((242.0, 0.0, 171.0), (242.0, 242.0, 171.0))
-    magnetY5 = ((0.0, 0.0, 342.0), (0.0, 242.0, 342.0))
-    magnetY6 = ((242.0, 0.0, 342.0), (242.0, 242.0, 342.0))
-
-    magnetZ1 = ((0.0, 0.0, 0.0), (0.0, 0.0, 342.0))  # points creating vector Z (magnet Z) in cm
-    magnetZ2 = ((242.0, 0.0, 0.0), (242.0, 0.0, 342.0))
-    magnetZ3 = ((0.0, 242.0, 0.0), (0.0, 242.0, 342.0))
-    magnetZ4 = ((242.0, 242.0, 0.0), (242.0, 242.0, 342.0))
+    # magnetY1 = ((0.0, 0.0, 0.0), (0.0, 242.0, 0.0))  # points creating vector Y (magnet Y) in cm
+    # magnetY2 = ((242.0, 0.0, 0.0), (242.0, 242.0, 0.0))
+    # magnetY3 = ((0.0, 0.0, 171.0), (0.0, 242.0, 171.0))
+    # magnetY4 = ((242.0, 0.0, 171.0), (242.0, 242.0, 171.0))
+    # magnetY5 = ((0.0, 0.0, 342.0), (0.0, 242.0, 342.0))
+    # magnetY6 = ((242.0, 0.0, 342.0), (242.0, 242.0, 342.0))
+    #
+    # magnetZ1 = ((0.0, 0.0, 0.0), (0.0, 0.0, 342.0))  # points creating vector Z (magnet Z) in cm
+    # magnetZ2 = ((242.0, 0.0, 0.0), (242.0, 0.0, 342.0))
+    # magnetZ3 = ((0.0, 242.0, 0.0), (0.0, 242.0, 342.0))
+    # magnetZ4 = ((242.0, 242.0, 0.0), (242.0, 242.0, 342.0))
 
     # magneticFlux = (4.0, 4.0, 4.0)  # (0.027, 0.027, 0.027)  # Maximal magnetic flux (near the wire) in T
     magneticFlux = (27.0, 27.0, 27.0)  # (0.027, 0.027, 0.027)  # (27.0, 27.0, 27.0)   # Maximal magnetic flux (near the wire) in T
     current = (135000.0, 135000.0, 135000.0) # (135000.0, 135000.0, 135000.0)  # (135.0, 135.0, 135.0)  # Current in magnets in A [Amperes]
     # current = (20000.0, 20000.0, 20000.0)  # (135.0, 135.0, 135.0)  # Current in magnets in A
-    noise = (-300 * 10 ** (-6), 300 * 10 ** (-6))  # noise range in T
-    # noise = (4 * 10 ** (-6), 6 * 10 ** (-6))  # noise range in T
+    noise = (-300 / np.power(10, 6), 300 / np.power(10, 6))  # noise range in T
+    # noise = (-5 * np.power(10, -6), 5 * np.power(10, -6))
+    # noise = (4 * np.power(10, -6), 6 * np.power(10, -6))  # noise range in T
 
     def __init__(self):
         """
         Class constructor
         """
+        # points creating vector X (magnet X) in cm
+        self.magnetsX.append(((0.0, 0.0, 0.0), (242.0, 0.0, 0.0)))
+        self.magnetsX.append(((0.0, 242.0, 0.0), (242.0, 242.0, 0.0)))
+        self.magnetsX.append(((0.0, 0.0, 171.0), (242.0, 0.0, 171.0)))
+        self.magnetsX.append(((0.0, 0.0, 342.0), (242.0, 0.0, 342.0)))
+        self.magnetsX.append(((0.0, 242.0, 342.0), (242.0, 242.0, 342.0)))
+        # points creating vector Y (magnet Y) in cm
+        self.magnetsY.append(((0.0, 0.0, 0.0), (0.0, 242.0, 0.0)))
+        self.magnetsY.append(((242.0, 0.0, 0.0), (242.0, 242.0, 0.0)))
+        self.magnetsY.append(((0.0, 0.0, 171.0), (0.0, 242.0, 171.0)))
+        self.magnetsY.append(((242.0, 0.0, 171.0), (242.0, 242.0, 171.0)))
+        self.magnetsY.append(((0.0, 0.0, 342.0), (0.0, 242.0, 342.0)))
+        self.magnetsY.append(((242.0, 0.0, 342.0), (242.0, 242.0, 342.0)))
+        # points creating vector Z (magnet Z) in cm
+        self.magnetsZ.append(((0.0, 0.0, 0.0), (0.0, 0.0, 342.0)))
+        self.magnetsZ.append(((242.0, 0.0, 0.0), (242.0, 0.0, 342.0)))
+        self.magnetsZ.append(((0.0, 242.0, 0.0), (0.0, 242.0, 342.0)))
+        self.magnetsZ.append(((242.0, 242.0, 0.0), (242.0, 242.0, 342.0)))
         # self.magnetX = ((100.0, 0.0, 100.0), (0.0, 0.0, 100.0))
         # self.magnetY = ((50.0, 0.0, 0.0), (50.0, 100.0, 0.0))
         # self.magnetZ = ((0.0, 50.0, 0.0), (0.0, 50.0, 200.0))
@@ -215,111 +237,41 @@ class Magnet:
         # self.magnetY = ((0.0, 0.0, 0.0), (0.0, 100.0, 0.0))
         # self.magnetZ = ((0.0, 0.0, 0.0), (0.0, 0.0, 220.0))
 
-    def distances(self, point):
-        """
-        This method calculates distances between point and magnets
-        :param point: Vector/list of 3 coordinates (x, y, z) from Cartesian system
-        :return: Distances between given point and magnets. Values in cm
-        """
-        distZ = pnt2line(point, self.magnetZ[0], self.magnetZ[1])
-        distY = pnt2line(point, self.magnetY[0], self.magnetY[1])
-        distX = pnt2line(point, self.magnetX[0], self.magnetX[1])
-        return distX, distY, distZ
-
     def distances15(self, point):
         distX = []
         distY = []
         distZ = []
 
-        distX.append(pnt2line(point, self.magnetX1[0], self.magnetX1[1])[0])
-        distX.append(pnt2line(point, self.magnetX2[0], self.magnetX2[1])[0])
-        distX.append(pnt2line(point, self.magnetX3[0], self.magnetX3[1])[0])
-        distX.append(pnt2line(point, self.magnetX4[0], self.magnetX4[1])[0])
-        distX.append(pnt2line(point, self.magnetX5[0], self.magnetX5[1])[0])
+        for magnet in self.magnetsX:
+            distX.append((pnt2line(point, magnet[0], magnet[1])[0]))
 
-        distY.append(pnt2line(point, self.magnetY1[0], self.magnetY1[1])[0])
-        distY.append(pnt2line(point, self.magnetY2[0], self.magnetY2[1])[0])
-        distY.append(pnt2line(point, self.magnetY3[0], self.magnetY3[1])[0])
-        distY.append(pnt2line(point, self.magnetY4[0], self.magnetY4[1])[0])
-        distY.append(pnt2line(point, self.magnetY5[0], self.magnetY5[1])[0])
-        distY.append(pnt2line(point, self.magnetY6[0], self.magnetY6[1])[0])
+        for magnet in self.magnetsY:
+            distY.append((pnt2line(point, magnet[0], magnet[1])[0]))
 
-        distZ.append(pnt2line(point, self.magnetZ1[0], self.magnetZ1[1])[0])
-        distZ.append(pnt2line(point, self.magnetZ2[0], self.magnetZ2[1])[0])
-        distZ.append(pnt2line(point, self.magnetZ3[0], self.magnetZ3[1])[0])
-        distZ.append(pnt2line(point, self.magnetZ4[0], self.magnetZ4[1])[0])
+        for magnet in self.magnetsZ:
+            distZ.append((pnt2line(point, magnet[0], magnet[1])[0]))
 
-        # print (distX)
-        # print (distY)
-        # print (distZ)
-        return distX + distY + distZ
+        return distX, distY, distZ
 
-    def countFlux15(self, distances):
+    def countFlux15(self, distancesX, distancesY, distancesZ):
         fluxX = []
         fluxY = []
         fluxZ = []
 
-        temp = self.current[0] * 2 * 10 ** (-7) / distances[0] * 100 # *100 to change unit from cm to m)
-        fluxX.append(self.addNoise(temp))
-        temp = self.current[0] * 2 * 10 ** (-7) / distances[1] * 100
-        fluxX.append(self.addNoise(temp))
-        temp = self.current[0] * 2 * 10 ** (-7) / distances[2] * 100
-        fluxX.append(self.addNoise(temp))
-        temp = self.current[0] * 2 * 10 ** (-7) / distances[3] * 100
-        fluxX.append(self.addNoise(temp))
-        temp = self.current[0] * 2 * 10 ** (-7) / distances[4] * 100
-        fluxX.append(self.addNoise(temp))
+        for dist in distancesX:
+            temp = self.current[0] * 2 / np.power(10, 7) / dist * 100
+            fluxX.append(self.addNoise(temp))
 
-        temp = self.current[0] * 2 * 10 ** (-7) / distances[5] * 100
-        fluxY.append(self.addNoise(temp))
-        temp = self.current[0] * 2 * 10 ** (-7) / distances[6] * 100
-        fluxY.append(self.addNoise(temp))
-        temp = self.current[0] * 2 * 10 ** (-7) / distances[7] * 100
-        fluxY.append(self.addNoise(temp))
-        temp = self.current[0] * 2 * 10 ** (-7) / distances[8] * 100
-        fluxY.append(self.addNoise(temp))
-        temp = self.current[0] * 2 * 10 ** (-7) / distances[9] * 100
-        fluxY.append(self.addNoise(temp))
-        temp = self.current[0] * 2 * 10 ** (-7) / distances[10] * 100
-        fluxY.append(self.addNoise(temp))
+        for dist in distancesY:
+            temp = self.current[0] * 2 / np.power(10, 7) / dist * 100
+            fluxY.append(self.addNoise(temp))
 
-        temp = self.current[0] * 2 * 10 ** (-7) / distances[11] * 100
-        fluxZ.append(self.addNoise(temp))
-        temp = self.current[0] * 2 * 10 ** (-7) / distances[12] * 100
-        fluxZ.append(self.addNoise(temp))
-        temp = self.current[0] * 2 * 10 ** (-7) / distances[13] * 100
-        fluxZ.append(self.addNoise(temp))
-        temp = self.current[0] * 2 * 10 ** (-7) / distances[14] * 100
-        fluxZ.append(self.addNoise(temp))
+        for dist in distancesZ:
+            temp = self.current[0] * 2 / np.power(10, 7) / dist * 100
+            fluxZ.append(self.addNoise(temp))
 
-        return fluxX + fluxY + fluxZ
-
-    def countFlux(self, distances):
-        """
-        This method calculates flux at a given distance for each magnet
-        :param distances: Distances from magnets. Value in cm
-        :return: list ogf calculated flux. Value in T
-        """
-        fluxX = self.current[0] * 2 * 10 ** (-7) / distances[0] * 100  # *100 to change unit from cm to m
-        # print("========================")
-        # print("Flux X:")
-        # print(fluxX)
-        fluxX = self.addNoise(fluxX)
-        # print(fluxX)
-        fluxY = self.current[1] * 2 * 10 ** (-7) / distances[1] * 100  # *100 to change unit from cm to m
-        # print("--------------------")
-        # print("Flux Y:")
-        # print(fluxY)
-        fluxY = self.addNoise(fluxY)
-        # print(fluxY)
-        fluxZ = self.current[2] * 2 * 10 ** (-7) / distances[2] * 100  # *100 to change unit from cm to m
-        # print("--------------------")
-        # print("Flux Z:")
-        # print(fluxZ)
-        fluxZ = self.addNoise(fluxZ)
-        # print(fluxZ)
-        # print("========================")
         return fluxX, fluxY, fluxZ
+
 
     def addNoise(self, flux):
         """
