@@ -3224,17 +3224,17 @@ for i in range(len(lookup2)):
   elif lookup2[i]['z'] >= maxZ:
     maxZ = lookup2[i]['z']
 
-# print("min x " + str(minX))
-# print("max x " + str(maxX))
-# print("min y " + str(minY))
-# print("max y " + str(maxY))
-# print("min z " + str(minZ))
-# print("max z " + str(maxZ))
+print("min x " + str(minX))
+print("max x " + str(maxX))
+print("min y " + str(minY))
+print("max y " + str(maxY))
+print("min z " + str(minZ))
+print("max z " + str(maxZ))
 
 points = []
 for i in range(len(lookup2)):
     # points.append(Sensor((float(lookup2[i]['x']+71), float(lookup2[i]['z']+71), float(lookup2[i]['y']+71)), x1, y1, z1, z2))
-    points.append(Sensor((float(lookup2[i]['x']+1), float(lookup2[i]['z']+1), float(lookup2[i]['y']+1)), x1, y1, z1, z2))
+    points.append(Sensor((float(lookup2[i]['x']+1), float(lookup2[i]['z']+31), float(lookup2[i]['y']+1)), x1, y1, z1, z2))
 # for x in range(71, 171, 10):
 #     for y in range(71, 171, 10):
 #         for z in range(71, 271, 10):
