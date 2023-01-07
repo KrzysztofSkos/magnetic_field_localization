@@ -146,6 +146,7 @@ class Magnet:
     # magneticFlux = (27.0, 27.0, 27.0)  # (0.027, 0.027, 0.027)  # (27.0, 27.0, 27.0)   # Maximal magnetic flux (near the wire) in T
     # current = (135000.0, 135000.0, 135000.0) # (135000.0, 135000.0, 135000.0)  # (135.0, 135.0, 135.0)  # Current in magnets in A [Amperes]
     # current = (20000.0, 20000.0, 20000.0)  # (135.0, 135.0, 135.0)  # Current in magnets in A
+    current = (600.0, 600.0, 600.0)
     noise = (-300 / np.power(10, 6), 300 / np.power(10, 6))  # noise range in T
     # noise = (-5 * np.power(10, -6), 5 * np.power(10, -6))
     # noise = (4 * np.power(10, -6), 6 * np.power(10, -6))  # noise range in T

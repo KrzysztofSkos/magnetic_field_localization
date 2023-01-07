@@ -10,10 +10,10 @@ from sensor import Sensor
 import csv
 
 tryCounter = 0
-x1 = 242.0
-y1 = 242.0
-z1 = 171.0
-z2 = 342.0
+x1 = 101.0
+y1 = 101.0
+z1 = 101.0
+z2 = 201.0
 
 def meanOfList(list1):
     """
@@ -3233,7 +3233,7 @@ for i in range(len(lookup2)):
 
 points = []
 for i in range(len(lookup2)):
-    # points.append(Sensor((float(lookup2[i]['x']+71), float(lookup2[i]['z']+71), float(lookup2[i]['y']+71))))
+    # points.append(Sensor((float(lookup2[i]['x']+71), float(lookup2[i]['z']+71), float(lookup2[i]['y']+71)), x1, y1, z1, z2))
     points.append(Sensor((float(lookup2[i]['x']+1), float(lookup2[i]['z']+1), float(lookup2[i]['y']+1)), x1, y1, z1, z2))
 # for x in range(71, 171, 10):
 #     for y in range(71, 171, 10):
@@ -3287,7 +3287,7 @@ print(con)
 print(mean(lista2))
 print(tryCounter)
 
-f = open('test3_human_body_15_magnets_WorkInProgress.csv', 'w')
+f = open('test3_human_body_15_magnets_Graphene.csv', 'w')
 writer = csv.writer(f)
 
 writer.writerow(("X", "Y", "Z", "Received flux X (not in use)", "Received flux Y (not in use)", "Received flux Z (not in use)",
