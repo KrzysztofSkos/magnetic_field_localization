@@ -185,19 +185,19 @@ class Magnet:
         # print("========================")
         # print("Flux X:")
         # print(fluxX)
-        fluxX = self.addNoise(fluxX)
+        fluxX = self.addDependentNoise(fluxX)
         # print(fluxX)
         fluxY = self.current[1] * 2 * 10 ** (-7) / distances[1] * 100  # *100 to change unit from cm to m
         # print("--------------------")
         # print("Flux Y:")
         # print(fluxY)
-        fluxY = self.addNoise(fluxY)
+        fluxY = self.addDependentNoise(fluxY)
         # print(fluxY)
         fluxZ = self.current[2] * 2 * 10 ** (-7) / distances[2] * 100  # *100 to change unit from cm to m
         # print("--------------------")
         # print("Flux Z:")
         # print(fluxZ)
-        fluxZ = self.addNoise(fluxZ)
+        fluxZ = self.addDependentNoise(fluxZ)
         # print(fluxZ)
         # print("========================")
         return fluxX, fluxY, fluxZ
@@ -211,4 +211,8 @@ class Magnet:
         :return: flux with noise. Value in T
         """
         flux += uniform(self.noise[0], self.noise[1])
+        return flux
+
+    def addDependentNoise(self, flux):
+        flux += uniform(-0.01 * flux, 0.01 * flux)
         return flux
