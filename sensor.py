@@ -4,7 +4,8 @@
 Created on Aug 03 16:52:07 2022
 @author: krzysztof_skos
 """
-from math import sqrt
+from math import sqrt, sin, cos, pi
+import random
 import numpy as np
 import numpy.linalg
 
@@ -34,6 +35,9 @@ class Sensor:
     distanceEstimatedZ = [0.0, 0.0, 0.0, 0.0]
     positionError = [0.0, 0.0, 0.0]
     totalPositionError = 0.0
+    sensorMagX = []
+    sensorMagY = []
+    sensorMagZ = []
 
     x1 = 242.0
     y1 = 242.0
@@ -50,6 +54,23 @@ class Sensor:
         self.y1 = y1
         self.z1 = z1
         self.z2 = z2
+        self.setGenerateSensorRotation()
+
+    def setGenerateSensorRotation(self):
+        # Generating first vector
+        sensorTheta = random.uniform(0, 2 * pi)
+        sensorZ = random.uniform(-1, 1)
+        sensorMagX = np.array([sqrt(1 - np.power(sensorZ, 2)) * sin(sensorTheta), sqrt(1 - np.power(sensorZ, 2)) * cos(sensorTheta), sensorZ])
+        # Generating second vector
+        sensorMagY = np.random.randn(3)
+        sensorMagY -= sensorMagY.dot(sensorMagX) * sensorMagX
+        sensorMagY /= np.linalg.norm(sensorMagY)
+        # Generating third vector
+        sensorMagZ = np.cross(sensorMagX, sensorMagY)
+        # Set values
+        self.sensorMagX = sensorMagX
+        self.sensorMagY = sensorMagY
+        self.sensorMagZ = sensorMagZ
 
 
     def setDistance15(self, distancesX, distancesY, distancesZ):

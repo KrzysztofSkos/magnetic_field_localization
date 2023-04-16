@@ -9,6 +9,9 @@ from magnets import Magnet
 from sensor import Sensor
 import csv
 import pandas as pd
+import numpy as np
+import random
+import math
 
 tryCounter = 0
 x1 = 101.0
@@ -79,8 +82,19 @@ def meanOfError(list1):
         X = None
     return X
 
+def generateGeomagneticFluxVector():
+    geo_theta = random.uniform(0, 2 * math.pi)
+    geo_z = random.uniform(-1, 1)
+    geo_mag = np.array(
+        [math.sqrt(1 - np.power(geo_z, 2)) * math.sin(geo_theta),
+         math.sqrt(1 - np.power(geo_z, 2)) * math.cos(geo_theta),
+         geo_z])
+    return geo_mag
+
+
 
 magnet = Magnet(x1, y1, z1, z2)
+geomagneticVector = generateGeomagneticFluxVector()
 
 df = pd.read_csv("models/finalbasemesh_57x100x19.csv")
 data = df.to_numpy()
@@ -143,7 +157,7 @@ for point in points:
     point.setDistance15(tempX, tempY, tempZ)
     for i in range(0, 100):
         # print (point.distanceX + point.distanceY + point.distanceZ)
-        tempX, tempY, tempZ = magnet.countFlux15(point.distanceX, point.distanceY, point.distanceZ)
+        tempX, tempY, tempZ = magnet.countFlux15(point.distanceX, point.distanceY, point.distanceZ, point.position, point.sensorMagX, point.sensorMagY, point.sensorMagZ, geomagneticVector)
         point.setFlux15(tempX, tempY, tempZ)
 
 
@@ -178,7 +192,7 @@ print(con)
 print(mean(lista2))
 print(tryCounter)
 
-f = open('test3_human_body_15_magnets_Graphene_100_repeats.csv', 'w')
+f = open('test3_human_body_15_magnets_Graphene_100_repeats_with_geomagnetic_field_current_0_6.csv', 'w')
 writer = csv.writer(f)
 
 writer.writerow(("X", "Y", "Z", "Received flux X (not in use)", "Received flux Y (not in use)", "Received flux Z (not in use)",

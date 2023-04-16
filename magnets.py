@@ -129,6 +129,18 @@ def pnt2line(pnt, start, end):
     return dist, nearest
 
 
+def addErrorToGeomagneticFluxVector(geo_mag):
+    # Adding WMM random flux from error distribution
+    component_x = 131 / np.power(10, 9)  # Error X component in Tesla (10^(-9) to change unit from nT to T
+    component_y = 94 / np.power(10, 9)  # Error Y component in Tesla (10^(-9) to change unit from nT to T
+    component_z = 157 / np.power(10, 9)  # Error Z component in Tesla (10^(-9) to change unit from nT to T
+
+    geo_mag[0] *= uniform(-component_x, component_x)
+    geo_mag[1] *= uniform(-component_y, component_y)
+    geo_mag[2] *= uniform(-component_z, component_z)
+
+    return geo_mag
+
 class Magnet:
     """
     This class represents a system of three wires acting as magnets in 3d Cartesian coordinate system
@@ -146,7 +158,7 @@ class Magnet:
     # magneticFlux = (27.0, 27.0, 27.0)  # (0.027, 0.027, 0.027)  # (27.0, 27.0, 27.0)   # Maximal magnetic flux (near the wire) in T
     # current = (135000.0, 135000.0, 135000.0) # (135000.0, 135000.0, 135000.0)  # (135.0, 135.0, 135.0)  # Current in magnets in A [Amperes]
     # current = (20000.0, 20000.0, 20000.0)  # (135.0, 135.0, 135.0)  # Current in magnets in A
-    current = (600.0, 600.0, 600.0)
+    current = (0.6, 0.6, 0.6)
     noise = (-300 / np.power(10, 6), 300 / np.power(10, 6))  # noise range in T
     # noise = (-5 * np.power(10, -6), 5 * np.power(10, -6))
     # noise = (4 * np.power(10, -6), 6 * np.power(10, -6))  # noise range in T
@@ -194,28 +206,178 @@ class Magnet:
 
         return distX, distY, distZ
 
-    def countFlux15(self, distancesX, distancesY, distancesZ):
+    def countFlux15(self, distancesX, distancesY, distancesZ, position, sensorMagX, sensorMagY, sensorMagZ, geomagneticVector):
         fluxX = []
         fluxY = []
         fluxZ = []
 
+        # Adding WMM error to geomagnetic field vector
+        geomagneticVector = addErrorToGeomagneticFluxVector(geomagneticVector)
+
+        counter = 0
         for dist in distancesX:
-            temp = self.current[0] * 2 / np.power(10, 7) / dist * 100
-            # fluxX.append(self.addNoise(temp))
-            fluxX.append(self.addDependentNoise(temp))
+            fluxX.append(self.vectorToScalarFluxX(counter, dist, position, sensorMagX, sensorMagY, sensorMagZ, geomagneticVector))
+            counter += 1
 
+        counter = 0
         for dist in distancesY:
-            temp = self.current[0] * 2 / np.power(10, 7) / dist * 100
-            # fluxY.append(self.addNoise(temp))
-            fluxY.append(self.addDependentNoise(temp))
+            fluxY.append(self.vectorToScalarFluxY(counter, dist, position, sensorMagX, sensorMagY, sensorMagZ, geomagneticVector))
+            counter += 1
 
+        counter = 0
         for dist in distancesZ:
-            temp = self.current[0] * 2 / np.power(10, 7) / dist * 100
-            # fluxZ.append(self.addNoise(temp))
-            fluxZ.append(self.addDependentNoise(temp))
+            fluxZ.append(self.vectorToScalarFluxZ(counter, dist, position, sensorMagX, sensorMagY, sensorMagZ, geomagneticVector))
+            counter += 1
+
 
         return fluxX, fluxY, fluxZ
 
+    def vectorToScalarFluxX(self, counter, dist, position, sensorMagX, sensorMagY, sensorMagZ, geomagneticVector):
+        # Creating generated magnetic flux vector with noise
+        B = self.current[0] * 2 / np.power(10, 7) / dist * 100
+        magnetToSensorVector = np.array([0,
+                                         position[1] - self.magnetsX[counter][0][1],
+                                         position[2] - self.magnetsX[counter][0][2]])
+        magnetVector = np.array([self.magnetsX[counter][1][0] - self.magnetsX[counter][0][0],
+                                 self.magnetsX[counter][1][1] - self.magnetsX[counter][0][1],
+                                 self.magnetsX[counter][1][2] - self.magnetsX[counter][0][2]])
+        magneticFieldVector = np.cross(magnetVector, magnetToSensorVector)
+        magneticFieldVector /= np.linalg.norm(magneticFieldVector)
+        magneticFieldVector *= self.addDependentNoise(B)
+
+        # Generating projection of generated magnetic field to sensor position/rotation vector
+        projectionGeneratedX = np.dot(magneticFieldVector, sensorMagX) / math.sqrt(
+            np.dot(sensorMagX, sensorMagX)) * sensorMagX
+        projectionGeneratedY = np.dot(magneticFieldVector, sensorMagY) / math.sqrt(
+            np.dot(sensorMagY, sensorMagY)) * sensorMagY
+        projectionGeneratedZ = np.dot(magneticFieldVector, sensorMagZ) / math.sqrt(
+            np.dot(sensorMagZ, sensorMagZ)) * sensorMagZ
+
+        # projection magnitude
+        projectionGeneratedMagnitudeX = math.sqrt(np.dot(projectionGeneratedX, projectionGeneratedX))
+        projectionGeneratedMagnitudeY = math.sqrt(np.dot(projectionGeneratedY, projectionGeneratedY))
+        projectionGeneratedMagnitudeZ = math.sqrt(np.dot(projectionGeneratedZ, projectionGeneratedZ))
+
+        # Generating projection of geomagnetic field to sensor position/rotation vector
+        projectionGeomagneticX = np.dot(geomagneticVector, sensorMagX) / math.sqrt(
+            np.dot(sensorMagX, sensorMagX)) * sensorMagX
+        projectionGeomagneticY = np.dot(geomagneticVector, sensorMagY) / math.sqrt(
+            np.dot(sensorMagY, sensorMagY)) * sensorMagY
+        projectionGeomagneticZ = np.dot(geomagneticVector, sensorMagZ) / math.sqrt(
+            np.dot(sensorMagZ, sensorMagZ)) * sensorMagZ
+
+        # projection magnitude
+        projectionGeomagneticMagnitudeX = math.sqrt(np.dot(projectionGeomagneticX, projectionGeomagneticX))
+        projectionGeomagneticMagnitudeY = math.sqrt(np.dot(projectionGeomagneticY, projectionGeomagneticY))
+        projectionGeomagneticMagnitudeZ = math.sqrt(np.dot(projectionGeomagneticZ, projectionGeomagneticZ))
+
+        # Sum of magnitudes
+        magnitudeX = projectionGeneratedMagnitudeX + projectionGeomagneticMagnitudeX
+        magnitudeY = projectionGeneratedMagnitudeY + projectionGeomagneticMagnitudeY
+        magnitudeZ = projectionGeneratedMagnitudeZ + projectionGeomagneticMagnitudeZ
+
+        # total magnitude
+        totalMagnitude = np.sqrt(np.power(magnitudeX, 2) + np.power(magnitudeY, 2) + np.power(magnitudeZ, 2))
+
+        return totalMagnitude
+
+    def vectorToScalarFluxY(self, counter, dist, position, sensorMagX, sensorMagY, sensorMagZ, geomagneticVector):
+        # Creating generated magnetic flux vector with noise
+        B = self.current[0] * 2 / np.power(10, 7) / dist * 100
+        magnetToSensorVector = np.array([position[0] - self.magnetsY[counter][0][0],
+                                         0,
+                                         position[2] - self.magnetsY[counter][0][2]])
+        magnetVector = np.array([self.magnetsY[counter][1][0] - self.magnetsY[counter][0][0],
+                                 self.magnetsY[counter][1][1] - self.magnetsY[counter][0][1],
+                                 self.magnetsY[counter][1][2] - self.magnetsY[counter][0][2]])
+        magneticFieldVector = np.cross(magnetVector, magnetToSensorVector)
+        magneticFieldVector /= np.linalg.norm(magneticFieldVector)
+        magneticFieldVector *= self.addDependentNoise(B)
+
+        # Generating projection of generated magnetic field to sensor position/rotation vector
+        projectionGeneratedX = np.dot(magneticFieldVector, sensorMagX) / math.sqrt(
+            np.dot(sensorMagX, sensorMagX)) * sensorMagX
+        projectionGeneratedY = np.dot(magneticFieldVector, sensorMagY) / math.sqrt(
+            np.dot(sensorMagY, sensorMagY)) * sensorMagY
+        projectionGeneratedZ = np.dot(magneticFieldVector, sensorMagZ) / math.sqrt(
+            np.dot(sensorMagZ, sensorMagZ)) * sensorMagZ
+
+        # projection magnitude
+        projectionGeneratedMagnitudeX = math.sqrt(np.dot(projectionGeneratedX, projectionGeneratedX))
+        projectionGeneratedMagnitudeY = math.sqrt(np.dot(projectionGeneratedY, projectionGeneratedY))
+        projectionGeneratedMagnitudeZ = math.sqrt(np.dot(projectionGeneratedZ, projectionGeneratedZ))
+
+        # Generating projection of geomagnetic field to sensor position/rotation vector
+        projectionGeomagneticX = np.dot(geomagneticVector, sensorMagX) / math.sqrt(
+            np.dot(sensorMagX, sensorMagX)) * sensorMagX
+        projectionGeomagneticY = np.dot(geomagneticVector, sensorMagY) / math.sqrt(
+            np.dot(sensorMagY, sensorMagY)) * sensorMagY
+        projectionGeomagneticZ = np.dot(geomagneticVector, sensorMagZ) / math.sqrt(
+            np.dot(sensorMagZ, sensorMagZ)) * sensorMagZ
+
+        # projection magnitude
+        projectionGeomagneticMagnitudeX = math.sqrt(np.dot(projectionGeomagneticX, projectionGeomagneticX))
+        projectionGeomagneticMagnitudeY = math.sqrt(np.dot(projectionGeomagneticY, projectionGeomagneticY))
+        projectionGeomagneticMagnitudeZ = math.sqrt(np.dot(projectionGeomagneticZ, projectionGeomagneticZ))
+
+        # Sum of magnitudes
+        magnitudeX = projectionGeneratedMagnitudeX + projectionGeomagneticMagnitudeX
+        magnitudeY = projectionGeneratedMagnitudeY + projectionGeomagneticMagnitudeY
+        magnitudeZ = projectionGeneratedMagnitudeZ + projectionGeomagneticMagnitudeZ
+
+        # total magnitude
+        totalMagnitude = np.sqrt(np.power(magnitudeX, 2) + np.power(magnitudeY, 2) + np.power(magnitudeZ, 2))
+
+        return totalMagnitude
+
+    def vectorToScalarFluxZ(self, counter, dist, position, sensorMagX, sensorMagY, sensorMagZ, geomagneticVector):
+        # Creating generated magnetic flux vector with noise
+        B = self.current[0] * 2 / np.power(10, 7) / dist * 100
+        magnetToSensorVector = np.array([position[0] - self.magnetsZ[counter][0][0],
+                                         position[1] - self.magnetsZ[counter][0][1],
+                                         0])
+        magnetVector = np.array([self.magnetsZ[counter][1][0] - self.magnetsZ[counter][0][0],
+                                 self.magnetsZ[counter][1][1] - self.magnetsZ[counter][0][1],
+                                 self.magnetsZ[counter][1][2] - self.magnetsZ[counter][0][2]])
+        magneticFieldVector = np.cross(magnetVector, magnetToSensorVector)
+        magneticFieldVector /= np.linalg.norm(magneticFieldVector)
+        magneticFieldVector *= self.addDependentNoise(B)
+
+        # Generating projection of generated magnetic field to sensor position/rotation vector
+        projectionGeneratedX = np.dot(magneticFieldVector, sensorMagX) / math.sqrt(
+            np.dot(sensorMagX, sensorMagX)) * sensorMagX
+        projectionGeneratedY = np.dot(magneticFieldVector, sensorMagY) / math.sqrt(
+            np.dot(sensorMagY, sensorMagY)) * sensorMagY
+        projectionGeneratedZ = np.dot(magneticFieldVector, sensorMagZ) / math.sqrt(
+            np.dot(sensorMagZ, sensorMagZ)) * sensorMagZ
+
+        # projection magnitude
+        projectionGeneratedMagnitudeX = math.sqrt(np.dot(projectionGeneratedX, projectionGeneratedX))
+        projectionGeneratedMagnitudeY = math.sqrt(np.dot(projectionGeneratedY, projectionGeneratedY))
+        projectionGeneratedMagnitudeZ = math.sqrt(np.dot(projectionGeneratedZ, projectionGeneratedZ))
+
+        # Generating projection of geomagnetic field to sensor position/rotation vector
+        projectionGeomagneticX = np.dot(geomagneticVector, sensorMagX) / math.sqrt(
+            np.dot(sensorMagX, sensorMagX)) * sensorMagX
+        projectionGeomagneticY = np.dot(geomagneticVector, sensorMagY) / math.sqrt(
+            np.dot(sensorMagY, sensorMagY)) * sensorMagY
+        projectionGeomagneticZ = np.dot(geomagneticVector, sensorMagZ) / math.sqrt(
+            np.dot(sensorMagZ, sensorMagZ)) * sensorMagZ
+
+        # projection magnitude
+        projectionGeomagneticMagnitudeX = math.sqrt(np.dot(projectionGeomagneticX, projectionGeomagneticX))
+        projectionGeomagneticMagnitudeY = math.sqrt(np.dot(projectionGeomagneticY, projectionGeomagneticY))
+        projectionGeomagneticMagnitudeZ = math.sqrt(np.dot(projectionGeomagneticZ, projectionGeomagneticZ))
+
+        # Sum of magnitudes
+        magnitudeX = projectionGeneratedMagnitudeX + projectionGeomagneticMagnitudeX
+        magnitudeY = projectionGeneratedMagnitudeY + projectionGeomagneticMagnitudeY
+        magnitudeZ = projectionGeneratedMagnitudeZ + projectionGeomagneticMagnitudeZ
+
+        # total magnitude
+        totalMagnitude = np.sqrt(np.power(magnitudeX, 2) + np.power(magnitudeY, 2) + np.power(magnitudeZ, 2))
+
+        return totalMagnitude
 
     def addNoise(self, flux):
         """
