@@ -34,6 +34,9 @@ class Sensor:
     distanceEstimatedY = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
     distanceEstimatedZ = [0.0, 0.0, 0.0, 0.0]
     positionError = [0.0, 0.0, 0.0]
+    positionErrorX = 0.0
+    positionErrorY = 0.0
+    positionErrorZ = 0.0
     totalPositionError = 0.0
     sensorMagX = []
     sensorMagY = []
@@ -54,7 +57,7 @@ class Sensor:
         self.y1 = y1
         self.z1 = z1
         self.z2 = z2
-        self.setGenerateSensorRotation()
+        # self.setGenerateSensorRotation()
 
     def setGenerateSensorRotation(self):
         # Generating first vector
@@ -198,6 +201,9 @@ class Sensor:
             self.positionError[2] = abs(self.position[2] - self.positionEstimated[2])
         except:
             self.positionError[2] = None
+        self.positionErrorX = self.positionError[0]
+        self.positionErrorY = self.positionError[1]
+        self.positionErrorZ = self.positionError[2]
         self.calculateTotalPositionError()
 
     def calculateTotalPositionError(self):
