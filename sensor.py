@@ -26,6 +26,9 @@ class Sensor:
     positionEstimated = [0.0, 0.0, 0.0]
     distanceEstimated = [0.0, 0.0, 0.0]
     positionError = [0.0, 0.0, 0.0]
+    positionErrorX = 0.0
+    positionErrorY = 0.0
+    positionErrorZ = 0.0
     totalPositionError = 0.0
     sensorMagX = []
     sensorMagY = []
@@ -37,7 +40,7 @@ class Sensor:
         :param pos: Sensor position in 3d Cartesian coordinate system. Value in cm
         """
         self.position = pos
-        self.setGenerateSensorRotation()
+        # self.setGenerateSensorRotation()
 
     def setGenerateSensorRotation(self):
         # Generating first vector
@@ -121,6 +124,9 @@ class Sensor:
             self.positionError[2] = abs(self.position[2] - self.positionEstimated[2])
         except:
             self.positionError[2] = None
+        self.positionErrorX = self.positionError[0]
+        self.positionErrorY = self.positionError[1]
+        self.positionErrorZ = self.positionError[2]
         self.calculateTotalPositionError()
 
     def calculateTotalPositionError(self):
