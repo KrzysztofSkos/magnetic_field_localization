@@ -95,17 +95,17 @@ class Sensor:
             self.positionEstimated[0] = sqrt((self.distanceEstimated[1] ** 2 + self.distanceEstimated[2] ** 2 -
                                               self.distanceEstimated[0] ** 2)  / 2)
         except:
-            self.positionEstimated[0] = None
+            self.positionEstimated[0] = 0 #None
         try:
             self.positionEstimated[1] = sqrt((self.distanceEstimated[0] ** 2 + self.distanceEstimated[2] ** 2 -
                                               self.distanceEstimated[1] ** 2) / 2)
         except:
-            self.positionEstimated[1] = None
+            self.positionEstimated[1] = 0 #None
         try:
             self.positionEstimated[2] = sqrt((self.distanceEstimated[0] ** 2 + self.distanceEstimated[1] ** 2 -
                                               self.distanceEstimated[2] ** 2) / 2)
         except:
-            self.positionEstimated[2] = None
+            self.positionEstimated[2] = 0 #None
         # print ((self.positionEstimated[0], self.positionEstimated[1], self.positionEstimated[2]))
 
     def calculatePositionError(self):
