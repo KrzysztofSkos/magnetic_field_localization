@@ -19,6 +19,22 @@ y1 = 101.0
 z1 = 101.0
 z2 = 201.0
 
+def meanListOfLists(listOfLists):
+    """
+    This method takes a list of lists and returns the list with means od each elements
+    :param listOfLists: A list of lists
+    :return: finalList: List of means
+    """
+    finalList = []
+    for i in range(len(listOfLists[0])):
+        temp = 0
+        for element in listOfLists:
+            temp += element[i]
+        temp /= len(listOfLists)
+        finalList.append(temp)
+    return finalList
+
+
 def meanOfList(list1):
     """
     This method calculates means of first, second and third values of list of three element lists
@@ -148,8 +164,16 @@ for i in range(len(lookup2)):
 
 # Counting the flux
 meanFluxList = []
+fluxListMeanX = []
+
+# counter = 0
 for point in points:
-    fluxList = []
+    # if counter >= 10:
+    #     break
+    # counter += 1
+    fluxListX = []
+    fluxListY = []
+    fluxListZ = []
     errorList = []
     totalErrorList = []
     tempX, tempY, tempZ = magnet.distances15(point.position)
@@ -162,6 +186,10 @@ for point in points:
         point.setFlux15(tempX, tempY, tempZ)
 
 
+        fluxListX.append(point.fluxX) # List of lists of flux X for every wire
+        fluxListY.append(point.fluxY)
+        fluxListZ.append(point.fluxZ)
+
         #fluxList.append(point.flux)
         point.calculateEstimatedDistance15(magnet.current)
         point.calculateEstimatedPosition15()
@@ -169,12 +197,17 @@ for point in points:
         # errorList.append(point.positionError)
         errorList.append((point.positionErrorX, point.positionErrorY, point.positionErrorZ))
         totalErrorList.append(point.totalPositionError)
+    # Means of 100 measurements, for every wire
+    fX = meanListOfLists(fluxListX)
+    fY = meanListOfLists(fluxListY)
+    fZ = meanListOfLists(fluxListZ)
 
     # fX, fY, fZ = meanOfList(fluxList)
     eX, eY, eZ = meanOfList(errorList)
 
     # meanFluxList.append([point.position, (fX, fY, fZ), (eX, eY, eZ), meanOfError(totalErrorList)])
-    meanFluxList.append([point.position, (0, 0, 0), (eX, eY, eZ), meanOfError(totalErrorList)])
+    # meanFluxList.append([point.position, (0, 0, 0), (eX, eY, eZ), meanOfError(totalErrorList)])
+    meanFluxList.append([point.position, (0, 0, 0), (eX, eY, eZ), meanOfError(totalErrorList), (fX, fY, fZ)])
 
 print(meanFluxList[0])
 print(len(meanFluxList))
@@ -194,11 +227,14 @@ print(con)
 print(mean(lista2))
 print(tryCounter)
 
-f = open('test3_human_body_15_magnets_Graphene_100_repeats_with_geomagnetic_field_current_100_after_debug.csv', 'w')
+f = open('test3_human_body_15_magnets_Graphene_100_repeats_with_geomagnetic_field_current_100_after_debug_with_flux2.csv', 'w')
 writer = csv.writer(f)
 
 writer.writerow(("X", "Y", "Z", "Received flux X (not in use)", "Received flux Y (not in use)", "Received flux Z (not in use)",
-                 "Error X", "Error Y", "Error Z", "Total position error"))
+                 "Error X", "Error Y", "Error Z", "Total position error",
+                 "Flux x1", "Flux x2", "Flux x3", "Flux x4", "Flux x5",
+                 "Flux y1", "Flux y2", "Flux y3", "Flux y4", "Flux y5", "Flux y6",
+                 "Flux z1", "Flux z2", "Flux z3"))
 
 minX = 1000
 minY = 1000
@@ -213,7 +249,11 @@ errZ = 0
 for row in meanFluxList:
     # print(row)
     writer.writerow((row[0][0], row[0][1], row[0][2], row[1][0], row[1][1],
-                     row[1][2], row[2][0], row[2][1], row[2][2], row[3]))
+                     row[1][2], row[2][0], row[2][1], row[2][2], row[3],
+                     row[4][0][0], row[4][0][1], row[4][0][2], row[4][0][3], row[4][0][4], # Flux X
+                     row[4][1][0], row[4][1][1], row[4][1][2], row[4][1][3], row[4][1][4], row[4][1][5], # Flux Y
+                     row[4][2][0], row[4][2][1], row[4][2][2], row[4][2][3] # Flux Z
+                     ))
     if row[0][0] <= minX:
       minX = row[0][0]
     elif row[0][0] >= maxX:
