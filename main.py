@@ -234,7 +234,7 @@ writer.writerow(("X", "Y", "Z", "Received flux X (not in use)", "Received flux Y
                  "Error X", "Error Y", "Error Z", "Total position error",
                  "Flux x1", "Flux x2", "Flux x3", "Flux x4", "Flux x5",
                  "Flux y1", "Flux y2", "Flux y3", "Flux y4", "Flux y5", "Flux y6",
-                 "Flux z1", "Flux z2", "Flux z3"))
+                 "Flux z1", "Flux z2", "Flux z3", "Flux z4"))
 
 minX = 1000
 minY = 1000
