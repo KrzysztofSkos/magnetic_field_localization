@@ -141,6 +141,17 @@ def addErrorToGeomagneticFluxVector(geo_mag):
     # geo_mag[1] *= component_y
     # geo_mag[2] *= component_z
 
+    # component_x = 65  / np.power(10, 3)  # Error X component in Tesla (10^(-6) to change unit from uT to T
+    # component_y = 65  / np.power(10, 3)  # Error Y component in Tesla (10^(-6) to change unit from uT to T
+    # component_z = 65  / np.power(10, 3)  # Error Z component in Tesla (10^(-6) to change unit from uT to T
+    #
+    # geo_mag[0] *= component_x  # uniform(component_x, component_x+0.00004)
+    # # geo_mag[0] *= choice([-1.0, 1.0])
+    # geo_mag[1] *= component_y  # uniform(component_y, component_y+0.00004)
+    # # geo_mag[1] *= choice([-1.0, 1.0])
+    # geo_mag[2] *= component_z  # uniform(component_z, component_z+0.00004)
+    # # geo_mag[2] *= choice([-1.0, 1.0])
+
     return geo_mag
 
 class Magnet:
@@ -152,7 +163,7 @@ class Magnet:
     magnetZ = ((0.0, 0.0, 0.0), (0.0, 0.0, 201.0))  # points creating vector Z (magnet Z) in cm
     # magneticFlux = (4.0, 4.0, 4.0)  # (0.027, 0.027, 0.027)  # Maximal magnetic flux (near the wire) in T
     # magneticFlux = (27.0, 27.0, 27.0)  # (0.027, 0.027, 0.027)  # Maximal magnetic flux (near the wire) in T
-    current = (100.0, 100.0, 100.0) #(135000.0, 135000.0, 135000.0)  # (135.0, 135.0, 135.0)  # Current in magnets in A
+    current = (10.0, 10.0, 10.0) #(135000.0, 135000.0, 135000.0)  # (135.0, 135.0, 135.0)  # Current in magnets in A
     # current = (20000.0, 20000.0, 20000.0)  # (135.0, 135.0, 135.0)  # Current in magnets in A
     noise = (-300 * 10 ** (-6), 300 * 10 ** (-6))  # noise range in T
     # noise = (4 * 10 ** (-6), 6 * 10 ** (-6))  # noise range in T
