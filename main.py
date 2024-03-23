@@ -112,14 +112,16 @@ def generateGeomagneticFluxVector():
 magnet = Magnet(x1, y1, z1, z2)
 geomagneticVector = generateGeomagneticFluxVector()
 
-df = pd.read_csv("models/finalbasemesh_57x100x19.csv")
+# df = pd.read_csv("models/finalbasemesh_57x100x19.csv")
+df = pd.read_csv("models/finalbasemesh_114x201x37.csv")
 data = df.to_numpy()
 
 lookup2 = []
 for row in data:
     lookup2.append({ 'x':    row[0], 'y':    row[1], 'z':     row[2]})
 # Voxel scaling
-scale = 1.77 # 3.43 # mean height = 175cm / max height in voxel model = 51
+# scale = 1.77 # 3.43 # mean height = 175cm / max height in voxel model = 51
+scale = 0.87  # mean height = 175cm / max height in voxel model = 201
 for i in range(len(lookup2)):
     lookup2[i]['x'] *= scale
     lookup2[i]['y'] *= scale
@@ -227,7 +229,7 @@ print(con)
 print(mean(lista2))
 print(tryCounter)
 
-f = open('test3_human_body_15_magnets_Graphene_100_repeats_with_geomagnetic_field_current_100_after_debug_with_flux2.csv', 'w')
+f = open('test3_human_body_15_magnets_Graphene_100_repeats_with_geomagnetic_field_current_100_after_debug_with_flux2_114x201x37.csv', 'w')
 writer = csv.writer(f)
 
 writer.writerow(("X", "Y", "Z", "Received flux X (not in use)", "Received flux Y (not in use)", "Received flux Z (not in use)",
