@@ -156,7 +156,7 @@ for point in points:
     point.setDistance((temp[0][0], temp[1][0], temp[2][0]))
     for i in range(0, 100):
         point.setGenerateSensorRotation()
-        fluxTemp = magnet.countFlux(point.distance, point.position, point.sensorMagX, point.sensorMagY, point.sensorMagZ, geomagneticVector)
+        fluxTemp = magnet.countFlux(point.distance, point.position, point.sensorMagX, point.sensorMagY, point.sensorMagZ, geomagneticVector.copy())
         point.setFlux(fluxTemp)
         fluxList.append(point.flux)
         point.calculateEstimatedDistance(magnet.current)
@@ -198,7 +198,7 @@ for point in points:
 # print(mean(lista2))
 # print(tryCounter)
 
-f = open('test3_human_body_3_magnets_Graphene_100_repeats_with_geomantic_field_current_100_after_debug_114x201x37csv', 'w')
+f = open('test4_human_body_3_magnets_Graphene_100_repeats_with_geomantic_field_current_100_after_debug_114x201x37csv', 'w')
 writer = csv.writer(f)
 
 writer.writerow(("X", "Y", "Z", "Received flux X (not in use)", "Received flux Y (not in use)", "Received flux Z (not in use)",
